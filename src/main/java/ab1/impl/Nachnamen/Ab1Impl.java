@@ -16,16 +16,20 @@ public class Ab1Impl implements Ab1 {
 	 if (data[mid] == element){
 		 System.out.prinln("Value is found at " + mid);
 		 break;
-
+}
 		 else if (arr[mid] > element){
 			 high = mid -1;
 	 } else if (arr[mid] < element){
 		 low= mid+1;
 	 }
  }
-}
+		 if (low > high){
+ 	 	 System.out.println("Value cannot be found in the Array")
+ 	  }
+
 		return 0;
 	}
+
 
 
 	@Override
