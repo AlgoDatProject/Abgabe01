@@ -9,25 +9,26 @@ public class Ab1Impl implements Ab1 {
  int low = 0;
  int high = data.length()-1;
  int mid = 0;
+ int index;
 
  while (low <= high){
 	 mid = (low + high)/2;
 
-	 if (data[mid] == element){
-		 System.out.prinln("Value is found at " + mid);
+	 if (data[mid] == element){ //Checks if the int element is in the middle of the Array
+		 index = mid; //if yes, the index which is going to be returned gets the position of the element in the Array
 		 break;
 }
-		 else if (arr[mid] > element){
+		 else if (arr[mid] > element){ //Slicing the Array and checking if the element is greater or smaller than the mid. 
 			 high = mid -1;
 	 } else if (arr[mid] < element){
 		 low= mid+1;
 	 }
  }
 		 if (low > high){
- 	 	 System.out.println("Value cannot be found in the Array")
+		 index = -1; //In case we haven't been in the loop the index now has the integer -1 which tells us that the element couldn't be found
  	  }
 
-		return 0;
+		return index;
 	}
 
 
