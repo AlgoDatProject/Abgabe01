@@ -16,11 +16,17 @@ public class Ab1Impl implements Ab1 {
 	 if (data[mid] == element){
 		 System.out.prinln("Value is found at " + mid);
 		 break;
-}
-}
 
+		 else if (arr[mid] > element){
+			 high = mid -1;
+	 } else if (arr[mid] < element){
+		 low= mid+1;
+	 }
+ }
+}
 		return 0;
 	}
+
 
 	@Override
 	public void shellSort(Integer[] data) {
