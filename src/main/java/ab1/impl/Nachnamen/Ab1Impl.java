@@ -8,8 +8,16 @@ public class Ab1Impl implements Ab1 {
 	public int binarySearch(int[] data, int element) {
  int low = 0;
  int high = data.length()-1;
- int mid = 0; 
+ int mid = 0;
 
+ while (low <= high){
+	 mid = (low + high)/2;
+
+	 if (data[mid] == element){
+		 System.out.prinln("Value is found at " + mid);
+		 break;
+}
+}
 
 		return 0;
 	}
