@@ -7,25 +7,24 @@ public class Ab1Impl implements Ab1 {
 	@Override
 	public int binarySearch(int[] data, int element) {
  int low = 0;
- int high = data.length()-1;
+ int high = data.length - 1;
  int mid = 0;
- int index;
+ int index = 0;
 
  while (low <= high){
 	 mid = (low + high)/2;
 
 	 if (data[mid] == element){ //Checks if the int element is in the middle of the Array
-		 index = mid; //if yes, the index which is going to be returned gets the position of the element in the Array
-		 break;
+		 return index = mid; //if yes, the index which is going to be returned gets the position of the element in the Array
 }
-		 else if (arr[mid] > element){ //Slicing the Array and checking if the element is greater or smaller than the mid. 
+		 else if (data[mid] > element){ //Slicing the Array and checking if the element is greater or smaller than the mid. 
 			 high = mid -1;
-	 } else if (arr[mid] < element){
+	 } else if (data[mid] < element){
 		 low= mid+1;
 	 }
  }
 		 if (low > high){
-		 index = -1; //In case we haven't been in the loop the index now has the integer -1 which tells us that the element couldn't be found
+		return index = -1; //In case we haven't been in the loop the index now has the integer -1 which tells us that the element couldn't be found
  	  }
 
 		return index;
