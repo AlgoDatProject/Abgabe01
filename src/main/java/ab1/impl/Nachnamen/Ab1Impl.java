@@ -63,9 +63,7 @@ public class Ab1Impl implements Ab1 {
     }
 
     @Override
-    public void quickSortStable(Integer[] data) {
-
-      public void quickSort (int [] arr){ //public Method which the user is going to use
+    public void quickSortStable(Integer[] arr) {
         sort(arr,0,arr.length-1);  //calling the private recursive method with the full array and the first and last indicies
   }
 
@@ -80,7 +78,7 @@ public class Ab1Impl implements Ab1 {
 
   private void swap (int [] arr, int pos1, int pos2){ // Utility funktion for swaping positions in the Array
     int holder = arr[pos1]; //Placeholder for the value on position1
-       arr[pos1] = arr[pos2]; 
+       arr[pos1] = arr[pos2];
        arr[pos2] = holder;
   }
 
