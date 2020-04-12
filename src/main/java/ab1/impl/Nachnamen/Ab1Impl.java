@@ -66,10 +66,15 @@ public class Ab1Impl implements Ab1 {
     public void quickSortStable(Integer[] data) {
 
       public void quickSort (int [] arr){ //public Method which the user is going to use
-        sort(arr,0,arr.length-1);  //calling the private recursive method with the full array and the first and last indicies 
+        sort(arr,0,arr.length-1);  //calling the private recursive method with the full array and the first and last indicies
   }
 
   private void sort (int [] arr, int low, int high){
+    if(low < high+1){ //Checks if there is more than one Item to sort
+            int part = parition(arr, low, high); //Gets a new Pivot-Element
+            sort(arr, low, part-1); //Recursive call for the left partition
+            sort(arr, part+1,high); //Recursive callf for the right partition 
+        }
 
   }
 
