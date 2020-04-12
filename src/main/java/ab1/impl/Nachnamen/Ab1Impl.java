@@ -82,8 +82,9 @@ public class Ab1Impl implements Ab1 {
        arr[pos2] = holder;
   }
 
-  private int getPivot(int low, int high){
-
+  private int getPivot(int low, int high){ //Receives low and high index for the partitions
+        Random pivot = new Random(); //Selects random number
+        return pivot.nextInt((high-low)+1)+low;  //Returns random number between the range of low and high 
   }
 
   private int parition (int [] arr, int low, int high){
