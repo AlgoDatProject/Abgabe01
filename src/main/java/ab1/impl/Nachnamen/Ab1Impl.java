@@ -64,12 +64,12 @@ public class Ab1Impl implements Ab1 {
 
     @Override
     public void quickSortStable(Integer[] data) {
-      
-      public void quickSort (int [] arr){
 
+      public void quickSort (int [] arr){ //public Method which the user is going to use
+        sort(arr,0,arr.length-1);  //calling the private recursive method with the full array and the first and last indicies 
   }
 
-  private void quickSort (int [] arr, int low, int high){
+  private void sort (int [] arr, int low, int high){
 
   }
 
