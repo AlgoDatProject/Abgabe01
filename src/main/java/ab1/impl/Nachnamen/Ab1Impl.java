@@ -84,11 +84,19 @@ public class Ab1Impl implements Ab1 {
 
   private int getPivot(int low, int high){ //Receives low and high index for the partitions
         Random pivot = new Random(); //Selects random number
-        return pivot.nextInt((high-low)+1)+low;  //Returns random number between the range of low and high 
+        return pivot.nextInt((high-low)+1)+low;  //Returns random number between the range of low and high
   }
 
   private int parition (int [] arr, int low, int high){
-
+    swap (arr, low, getPivot(low, high)); //Getting an Pivot within the given range of low and high + Swap swaps pivot to the leftmost position
+       int stop = low+1; // Left pointer stop is our border; Setting it just to the right of the pivot
+       for (int i = stop; i <=high; i++){ // Iterate thorugh items and compare them to the pivot (arr[low])
+           if (arr[i] < arr[low]){
+               swap (arr, i, stop++); //Swap it with the border
+           }
+       }
+       swap(arr, low, stop-1); //Swap pivot to right position and return index of the pivot 
+       return stop-1;
   }
 
     }
