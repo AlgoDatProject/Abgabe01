@@ -64,6 +64,26 @@ public class Ab1Impl implements Ab1 {
 
     @Override
     public void quickSortStable(Integer[] data) {
+      
+      public void quickSort (int [] arr){
+
+  }
+
+  private void quickSort (int [] arr, int low, int high){
+
+  }
+
+  private void swap (int [] arr, int index1, int index2){
+
+  }
+
+  private int getPivot(int low, int high){
+
+  }
+
+  private int parition (int [] arr, int low, int high){
+
+  }
 
     }
 
