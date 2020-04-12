@@ -73,13 +73,15 @@ public class Ab1Impl implements Ab1 {
     if(low < high+1){ //Checks if there is more than one Item to sort
             int part = parition(arr, low, high); //Gets a new Pivot-Element
             sort(arr, low, part-1); //Recursive call for the left partition
-            sort(arr, part+1,high); //Recursive callf for the right partition 
+            sort(arr, part+1,high); //Recursive callf for the right partition
         }
 
   }
 
-  private void swap (int [] arr, int index1, int index2){
-
+  private void swap (int [] arr, int pos1, int pos2){ // Utility funktion for swaping positions in the Array
+    int holder = arr[pos1]; //Placeholder for the value on position1
+       arr[pos1] = arr[pos2]; 
+       arr[pos2] = holder;
   }
 
   private int getPivot(int low, int high){
