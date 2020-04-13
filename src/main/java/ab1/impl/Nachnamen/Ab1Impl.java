@@ -2,6 +2,8 @@ package ab1.impl.Nachnamen;
 
 import ab1.Ab1;
 
+import java.util.Random;
+
 public class Ab1Impl implements Ab1 {
 
     @Override
@@ -44,14 +46,14 @@ public class Ab1Impl implements Ab1 {
                 int compare = data[right];
                 int temp = right;
 
-                while (temp >= gap &&data[temp - gap] > compare) {
+                while (temp >= gap && data[temp - gap] > compare) {
 
                     //while is only executed if the two elements separated by the gap are in the wrong order
-					//then it switches the lower one to the right place
-					data[temp] = data[temp-gap];
+                    //then it switches the lower one to the right place
+                    data[temp] = data[temp - gap];
 
-					//reducing temp by the gap amount ensures that while loop will break after temp gets lower than gap
-					temp -= gap;
+                    //reducing temp by the gap amount ensures that while loop will break after temp gets lower than gap
+                    temp -= gap;
                 }
 
                 //now the lesser number has two switch to the left
@@ -62,44 +64,43 @@ public class Ab1Impl implements Ab1 {
 
     }
 
-    @Override
-    public void quickSortStable(Integer[] arr) {
-        sort(arr,0,arr.length-1);  //calling the private recursive method with the full array and the first and last indicies
-  }
 
-  private void sort (int [] arr, int low, int high){
-    if(low < high+1){ //Checks if there is more than one Item to sort
+    public void quickSortStable(Integer[] data) {
+        sort(data, 0, data.length - 1);  //calling the private recursive method with the full array and the first and last indicies
+    }
+
+    private void sort(Integer[] arr, int low, int high) {
+        if (low < high + 1) { //Checks if there is more than one Item to sort
             int part = parition(arr, low, high); //Gets a new Pivot-Element
-            sort(arr, low, part-1); //Recursive call for the left partition
-            sort(arr, part+1,high); //Recursive callf for the right partition
+            sort(arr, low, part - 1); //Recursive call for the left partition
+            sort(arr, part + 1, high); //Recursive callf for the right partition
         }
 
-  }
-
-  private void swap (int [] arr, int pos1, int pos2){ // Utility funktion for swaping positions in the Array
-    int holder = arr[pos1]; //Placeholder for the value on position1
-       arr[pos1] = arr[pos2];
-       arr[pos2] = holder;
-  }
-
-  private int getPivot(int low, int high){ //Receives low and high index for the partitions
-        Random pivot = new Random(); //Selects random number
-        return pivot.nextInt((high-low)+1)+low;  //Returns random number between the range of low and high
-  }
-
-  private int parition (int [] arr, int low, int high){
-    swap (arr, low, getPivot(low, high)); //Getting an Pivot within the given range of low and high + Swap swaps pivot to the leftmost position
-       int stop = low+1; // Left pointer stop is our border; Setting it just to the right of the pivot
-       for (int i = stop; i <=high; i++){ // Iterate thorugh items and compare them to the pivot (arr[low])
-           if (arr[i] < arr[low]){
-               swap (arr, i, stop++); //Swap it with the border
-           }
-       }
-       swap(arr, low, stop-1); //Swap pivot to right position and return index of the pivot 
-       return stop-1;
-  }
-
     }
+
+    private void swap(Integer[] arr, int pos1, int pos2) { // Utility funktion for swaping positions in the Array
+        int holder = arr[pos1]; //Placeholder for the value on position1
+        arr[pos1] = arr[pos2];
+        arr[pos2] = holder;
+    }
+
+    private int getPivot(int low, int high) { //Receives low and high index for the partitions
+        Random pivot = new Random(); //Selects random number
+        return pivot.nextInt((high - low) + 1) + low;  //Returns random number between the range of low and high
+    }
+
+    private int parition(Integer[] arr, int low, int high) {
+        swap(arr, low, getPivot(low, high)); //Getting an Pivot within the given range of low and high + Swap swaps pivot to the leftmost position
+        int stop = low + 1; // Left pointer stop is our border; Setting it just to the right of the pivot
+        for (int i = stop; i <= high; i++) { // Iterate thorugh items and compare them to the pivot (arr[low])
+            if (arr[i] < arr[low]) {
+                swap(arr, i, stop++); //Swap it with the border
+            }
+        }
+        swap(arr, low, stop - 1); //Swap pivot to right position and return index of the pivot
+        return stop - 1;
+    }
+
 
     @Override
     public int[][] mult(int[][] m1, int[][] m2) {

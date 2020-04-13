@@ -29,7 +29,7 @@ public class Ab1Test {
 
 
     @Test
-    public void TestCorrectElementBinarySearch() {
+    public void testCorrectElementBinarySearch() {
         int search = 5;
 
 
@@ -39,7 +39,7 @@ public class Ab1Test {
     }
 
     @Test
-    public void TestElementNotFoundBinarySearch() {
+    public void testElementNotFoundBinarySearch() {
         int search = 8;
 
         int erg = impl.binarySearch(arr, search);
@@ -48,10 +48,18 @@ public class Ab1Test {
     }
 
     @Test
-    public void TestShellSort(){
+    public void testShellSort(){
 
         impl.shellSort(dataRaw);
         Assertions.assertArrayEquals(dataSorted, dataRaw);
+    }
+
+    @Test
+    public void testQuickSort(){
+
+        impl.quickSortStable(dataRaw);
+        Assertions.assertArrayEquals(dataSorted,dataRaw);
+
     }
 
 
