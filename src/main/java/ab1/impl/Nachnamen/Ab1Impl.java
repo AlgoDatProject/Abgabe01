@@ -105,11 +105,11 @@ public class Ab1Impl implements Ab1 {
     @Override
     public int[][] mult(int[][] m1, int[][] m2) {
 
-        int k=10;
-        if(m1.length==m2.length){
+        int k=10;                 // Dimension k freigewählt
+        if(m1.length==m2.length){   //check if the arrays are the same length
 
 
-        if(m1.length>=k) {
+        if(m1.length>=k) {    //case one: Strassen Algorithmus
 
             int n = m1.length;
 
@@ -128,7 +128,7 @@ public class Ab1Impl implements Ab1 {
                 int[][]m221=new int[n/2][n/2];
                 int[][]m222=new int[n/2][n/2];
 
-                split(m1,m111,0,0);
+                split(m1,m111,0,0);             //Dividing matrix into 4 halves
                 split(m1,m112,0,n/2);
                 split(m1,m121,n/2,0);
                 split(m1,m122,n/2,n/2);
@@ -138,7 +138,7 @@ public class Ab1Impl implements Ab1 {
                 split(m2,m221,n/2,0);
                 split(m2,m222,n/2,n/2);
 
-                int[][]M1= mult(add(m111,m122),add(m211,m222));
+                int[][]M1= mult(add(m111,m122),add(m211,m222)); //auxiliary matrix
                 int[][]M2= mult(add(m121,m122),m211);
                 int[][]M3= mult(m111,sub(m212,m222));
                 int[][]M4=mult(m122,sub(m221,m211));
@@ -146,12 +146,12 @@ public class Ab1Impl implements Ab1 {
                 int[][]M6=mult(sub(m121,m111),add(m211,m212));
                 int[][]M7=mult(sub(m112,m122),add(m221,m222));
 
-                int[][] C11= add(sub(add(M1,M4),M5),M7);
+                int[][]C11=add(sub(add(M1,M4),M5),M7); //result
                 int[][]C12= add(M3,M5);
                 int[][]C21=add(M2,M4);
                 int[][]C22=add(sub(add(M1,M3),M2),M6);
 
-                join(C11,result,0,0);
+                join(C11,result,0,0); //join 4 halves into one result matrix
                 join(C12,result,0,n/2);
                 join(C21,result,n/2,0);
                 join(C22,result,n/2,n/2);
@@ -162,12 +162,12 @@ public class Ab1Impl implements Ab1 {
 
         }
         else{
-            int [][] result=null;
+            int [][] result=null;  //case:normal multiplication matrix
 
             if(m1[0].length==m2.length){
-                int zm1= m1.length; //Zeile m1
-                int sm1= m1[0].length; //Spalte m1
-                int sm2= m2[0].length; // Spalte m2
+                int zm1= m1.length; //row m1
+                int sm1= m1[0].length; //column m1
+                int sm2= m2[0].length; // column m2
 
                 result=new int[zm1][sm2];
 
@@ -182,8 +182,8 @@ public class Ab1Impl implements Ab1 {
 
             }
             else{
-                int z=m1.length;//zeile
-                int s=m1[0].length;
+                int z=m1.length;// row
+                int s=m1[0].length;// column
 
                 result=new int[z][s];
                 for(int i=0;i<m1.length;i++){
@@ -200,11 +200,13 @@ public class Ab1Impl implements Ab1 {
 
 
         else{
-            System.out.println("Es wurde keine gleich langen Arrays eingegeben");}
+            System.out.println("Es wurde keine gleich langen Arrays eingegeben");}///???
 
-        return new int[0][];//vorgegeben
+        return new int[0][];//vorgegeben ???
     }
-    public int [][] sub(int[][]m1, int[][]m2){
+
+
+    public int [][] sub(int[][]m1, int[][]m2){ //function to sub two matrices
         int n= m1.length;
         int[][] m3= new int[n][n];
         for(int i=0; i<n;i++){
@@ -216,7 +218,7 @@ public class Ab1Impl implements Ab1 {
 
     }
 
-    public int[][] add(int[][]m1, int[][]m2){
+    public int[][] add(int[][]m1, int[][]m2){ //function to add two matrices
         int n=m1.length;
         int [][]m3=new int[n][n];
         for(int i=0;i<n;i++){
@@ -228,7 +230,7 @@ public class Ab1Impl implements Ab1 {
         return m3;
     }
 
-    public void split(int[][]A,int[][]B,int i, int j){
+    public void split(int[][]A,int[][]B,int i, int j){ //function tp split the matrix into little matrices
         for(int i1=0, i2=i; i1<B.length;i1++,i2++){
             for(int j1=0, j2=j; j1< B.length;j1++,j2++){
                 B[i1][j1]=A[i2][j2];
@@ -237,7 +239,7 @@ public class Ab1Impl implements Ab1 {
         }
     }
 
-    public void join(int[][]B, int[][]A, int i, int j){
+    public void join(int[][]B, int[][]A, int i, int j){ //function to join the matrices into one matrix
         for (int i1=0, i2=i; i1<B.length;i1++,i2++){
             for(int j1=0, j2=j;j1<B.length;j1++,j2++){
                 A[i2][j2]=B[i1][j1];
