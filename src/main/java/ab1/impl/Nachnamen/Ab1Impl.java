@@ -7,7 +7,7 @@ import java.util.Random;
 public class Ab1Impl implements Ab1 {
 
     @Override
-    public int binarySearch(int[] data, int element) {
+    public int binarySearch(int[] arr, int el) {
         int low = 0;
         int high = data.length - 1;
         int mid = 0;
@@ -16,11 +16,11 @@ public class Ab1Impl implements Ab1 {
         while (low <= high) {
             mid = (low + high) / 2;
 
-            if (data[mid] == element) { //Checks if the int element is in the middle of the Array
+            if (arr[mid] == el) { //Checks if the int element is in the middle of the Array
                 return index = mid; //if yes, the index which is going to be returned gets the position of the element in the Array
-            } else if (data[mid] > element) { //Ignore right half
+            } else if (arr[mid] > el) { //Ignore right half
                 high = mid - 1;
-            } else if (data[mid] < element) {//ignore left half
+            } else if (arr[mid] < el) {//ignore left half
                 low = mid + 1;
             }
         }
