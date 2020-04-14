@@ -105,15 +105,18 @@ public class Ab1Impl implements Ab1 {
     @Override
     public int[][] mult(int[][] m1, int[][] m2) {
 
+        int n = m1.length;
+
+        int[][] result = new int[n][n];
+
+
         int k=10;                 // Dimension k freigewählt
         if(m1.length==m2.length){   //check if the arrays are the same length
 
 
         if(m1.length>=k) {    //case one: Strassen Algorithmus
 
-            int n = m1.length;
 
-            int[][] result = new int[n][n];
 
             if (n==1){
                 result[0][0]= m1[0][0]* m2[0][0];
@@ -162,20 +165,20 @@ public class Ab1Impl implements Ab1 {
 
         }
         else{
-            int [][] result=null;  //case:normal multiplication matrix
+            int [][] result2=null;  //case:normal multiplication matrix
 
             if(m1[0].length==m2.length){
                 int zm1= m1.length; //row m1
                 int sm1= m1[0].length; //column m1
                 int sm2= m2[0].length; // column m2
 
-                result=new int[zm1][sm2];
+                result2=new int[zm1][sm2];
 
                 for(int i=0; i< zm1; i++){
                     for(int j=0; j<sm2; j++){
-                        result[i][j]=0;
-                        for(int n=0; n<sm1;n++){
-                        result[i][j]+=m1[i][n]*m2[n][j];}
+                        result2[i][j]=0;
+                        for(int l=0; l<sm1;l++){
+                        result2[i][j]+=m1[i][l]*m2[l][j];}
                     }
                 }
 
@@ -185,24 +188,25 @@ public class Ab1Impl implements Ab1 {
                 int z=m1.length;// row
                 int s=m1[0].length;// column
 
-                result=new int[z][s];
+                result2=new int[z][s];
                 for(int i=0;i<m1.length;i++){
                     for(int j=0; j<m1[0].length;j++){
-                        result[i][j]=0;
+                        result2[i][j]=0;
                     }
                 }
             }
 
-            return result;
+            return result2;
 
             }
         }
 
 
         else{
-            System.out.println("Es wurde keine gleich langen Arrays eingegeben");}///???
+            System.out.println("Es wurde keine gleich langen Arrays eingegeben");}///??? Darf man das ?
 
-        return new int[0][];//vorgegeben ???
+        //return new int[0][];//vorgegeben ???
+        return result;
     }
 
 
@@ -230,7 +234,7 @@ public class Ab1Impl implements Ab1 {
         return m3;
     }
 
-    public void split(int[][]A,int[][]B,int i, int j){ //function tp split the matrix into little matrices
+    public void split(int[][]A,int[][]B,int i, int j){ //function to split the matrix into little matrices
         for(int i1=0, i2=i; i1<B.length;i1++,i2++){
             for(int j1=0, j2=j; j1< B.length;j1++,j2++){
                 B[i1][j1]=A[i2][j2];

@@ -39,4 +39,5 @@ public interface Ab1 {
      * @return Produkt von m1 und m2
      */
     public int[][] mult(int[][] m1, int[][] m2);
+
 }
