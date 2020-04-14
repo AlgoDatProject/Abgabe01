@@ -18,14 +18,14 @@ public class Ab1Impl implements Ab1 {
 
             if (data[mid] == element) { //Checks if the int element is in the middle of the Array
                 return index = mid; //if yes, the index which is going to be returned gets the position of the element in the Array
-            } else if (data[mid] > element) { //Slicing the Array and checking if the element is greater or smaller than the mid.
+            } else if (data[mid] > element) { //Ignore right half
                 high = mid - 1;
-            } else if (data[mid] < element) {
+            } else if (data[mid] < element) {//ignore left half
                 low = mid + 1;
             }
         }
         if (low > high) {
-            return index = -1; //In case we haven't been in the loop the index now has the integer -1 which tells us that the element couldn't be found
+            return index = -1; //Element was not present
         }
 
         return index;
