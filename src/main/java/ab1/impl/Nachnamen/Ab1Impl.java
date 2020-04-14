@@ -9,7 +9,7 @@ public class Ab1Impl implements Ab1 {
     @Override
     public int binarySearch(int[] arr, int el) {
         int low = 0;
-        int high = data.length - 1;
+        int high = arr.length - 1;
         int mid = 0;
         int index = 0;
 
