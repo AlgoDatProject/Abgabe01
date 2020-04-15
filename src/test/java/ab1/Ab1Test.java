@@ -2,13 +2,14 @@ package ab1;
 
 import ab1.impl.Nachnamen.Ab1Impl;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.Assertions.*;
 
 public class Ab1Test {
     private Ab1Impl impl;
     private int arr[];
     private Integer dataRaw[];
     private Integer dataSorted[];
+    private Integer a[];
+    private Integer as[];
 
     @BeforeEach
     public void init() {
@@ -16,6 +17,9 @@ public class Ab1Test {
         arr = new int[]{1, 2, 3, 4, 5, 6};
         dataRaw = new Integer[]{3,6,1,10,5,7,2,9,8,4};
         dataSorted = new Integer[]{1,2,3,4,5,6,7,8,9,10};
+        a = new Integer[]{36, 42, 47, 19, 98, 62, 98, 14, 4, 21, 71, 83, 93, 40, 63, 77, 88, 68, 5, 43, 11, 43, 80, 92};
+        as = new Integer[]{4, 5, 11, 14, 19, 21, 36, 40, 42, 43, 43, 47, 62, 63, 68, 71, 77, 80, 83, 88, 92, 93, 98, 98};
+
 
     }
 
@@ -32,7 +36,6 @@ public class Ab1Test {
     public void testCorrectElementBinarySearch() {
         int search = 5;
 
-
         int erg = impl.binarySearch(arr, search);
 
         Assertions.assertEquals(4, erg);
@@ -45,6 +48,7 @@ public class Ab1Test {
         int erg = impl.binarySearch(arr, search);
 
         Assertions.assertEquals(-1, erg);
+
     }
 
     @Test
@@ -55,10 +59,25 @@ public class Ab1Test {
     }
 
     @Test
+    public void testShellSortLongArr(){
+
+        impl.shellSort(a);
+        Assertions.assertArrayEquals(as, a);
+    }
+
+    @Test
     public void testQuickSort(){
 
         impl.quickSortStable(dataRaw);
         Assertions.assertArrayEquals(dataSorted,dataRaw);
+
+    }
+
+    @Test
+    public void testQuickSortLongArr(){
+
+        impl.quickSortStable(a);
+        Assertions.assertArrayEquals(a,as);
 
     }
 
