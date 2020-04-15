@@ -62,6 +62,17 @@ public class Ab1Test {
 
     }
 
+    @Test
+    public void testMatrizenMult(){
+        int[][]m1={{1,2,3},{1,2,3},{1,2,3}};
+        int[][]m2={{2,3,4},{2,3,4},{2,3,4}};
+        int[][]m3={{12,18,24},{12,18,24},{12,18,24}};
+
+
+
+        Assertions.assertEquals(m3,impl.mult(m1,m2));
+    }
+
 
 
 

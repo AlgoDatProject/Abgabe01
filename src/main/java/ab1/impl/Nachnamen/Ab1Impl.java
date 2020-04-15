@@ -107,7 +107,7 @@ public class Ab1Impl implements Ab1 {
 
         int[][] result;
 
-        int k=10;                 // Dimension k
+        int k=3;                 // Dimension k
 
         if(m1.length==m2.length && m1[0].length==m2[0].length && m1.length==m2[0].length){   //check if the arrays are the same length
 
