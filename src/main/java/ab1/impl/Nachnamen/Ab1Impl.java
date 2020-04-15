@@ -2,8 +2,6 @@ package ab1.impl.Nachnamen;
 
 import ab1.Ab1;
 
-import java.util.Random;
-
 public class Ab1Impl implements Ab1 {
 
     @Override
