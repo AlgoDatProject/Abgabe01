@@ -104,60 +104,58 @@ public class Ab1Impl implements Ab1 {
 
         int[][] result;
 
-        int k = 3;                 // Dimension k
+        int k = 3;// Dimension k
 
-        if (m1.length == m2.length && m1[0].length == m2[0].length && m1.length == m2[0].length) {   //check if the arrays are the same length
+        //check if the arrays are the same length
+        if (m1.length >= k && m1.length == m2.length && m1[0].length == m2[0].length && m1.length == m2[0].length) {    //case one: Strassen Algorithmus
+            int n = m1.length;
+            result = new int[n][n];
 
-            if (m1.length >= k) {    //case one: Strassen Algorithmus
-                int n = m1.length;
-                result = new int[n][n];
 
+            if (n == 1) {
+                result[0][0] = m1[0][0] * m2[0][0];
+            } else {
+                int[][] m111 = halfMatrix(n);;
+                int[][] m112 = halfMatrix(n);;
+                int[][] m121 = halfMatrix(n);;
+                int[][] m122 = halfMatrix(n);;
+                int[][] m211 = halfMatrix(n);;
+                int[][] m212 = halfMatrix(n);;
+                int[][] m221 = halfMatrix(n);;
+                int[][] m222 = halfMatrix(n);;
 
-                if (n == 1) {
-                    result[0][0] = m1[0][0] * m2[0][0];
-                } else {
-                    int[][] m111 = new int[n / 2][n / 2];
-                    int[][] m112 = new int[n / 2][n / 2];
-                    int[][] m121 = new int[n / 2][n / 2];
-                    int[][] m122 = new int[n / 2][n / 2];
-                    int[][] m211 = new int[n / 2][n / 2];
-                    int[][] m212 = new int[n / 2][n / 2];
-                    int[][] m221 = new int[n / 2][n / 2];
-                    int[][] m222 = new int[n / 2][n / 2];
+                split(m1, m111, 0, 0);             //Dividing matrix into 4 halves
+                split(m1, m112, 0, n / 2);
+                split(m1, m121, n / 2, 0);
+                split(m1, m122, n / 2, n / 2);
 
-                    split(m1, m111, 0, 0);             //Dividing matrix into 4 halves
-                    split(m1, m112, 0, n / 2);
-                    split(m1, m121, n / 2, 0);
-                    split(m1, m122, n / 2, n / 2);
+                split(m2, m211, 0, 0);
+                split(m2, m212, 0, n / 2);
+                split(m2, m221, n / 2, 0);
+                split(m2, m222, n / 2, n / 2);
 
-                    split(m2, m211, 0, 0);
-                    split(m2, m212, 0, n / 2);
-                    split(m2, m221, n / 2, 0);
-                    split(m2, m222, n / 2, n / 2);
+                int[][] M1 = mult(add(m111, m122), add(m211, m222)); //auxiliary matrix
+                int[][] M2 = mult(add(m121, m122), m211);
+                int[][] M3 = mult(m111, sub(m212, m222));
+                int[][] M4 = mult(m122, sub(m221, m211));
+                int[][] M5 = mult(add(m111, m112), m222);
+                int[][] M6 = mult(sub(m121, m111), add(m211, m212));
+                int[][] M7 = mult(sub(m112, m122), add(m221, m222));
 
-                    int[][] M1 = mult(add(m111, m122), add(m211, m222)); //auxiliary matrix
-                    int[][] M2 = mult(add(m121, m122), m211);
-                    int[][] M3 = mult(m111, sub(m212, m222));
-                    int[][] M4 = mult(m122, sub(m221, m211));
-                    int[][] M5 = mult(add(m111, m112), m222);
-                    int[][] M6 = mult(sub(m121, m111), add(m211, m212));
-                    int[][] M7 = mult(sub(m112, m122), add(m221, m222));
+                int[][] C11 = add(sub(add(M1, M4), M5), M7); //result
+                int[][] C12 = add(M3, M5);
+                int[][] C21 = add(M2, M4);
+                int[][] C22 = add(sub(add(M1, M3), M2), M6);
 
-                    int[][] C11 = add(sub(add(M1, M4), M5), M7); //result
-                    int[][] C12 = add(M3, M5);
-                    int[][] C21 = add(M2, M4);
-                    int[][] C22 = add(sub(add(M1, M3), M2), M6);
+                join(C11, result, 0, 0); //join 4 halves into one result matrix
+                join(C12, result, 0, n / 2);
+                join(C21, result, n / 2, 0);
+                join(C22, result, n / 2, n / 2);
 
-                    join(C11, result, 0, 0); //join 4 halves into one result matrix
-                    join(C12, result, 0, n / 2);
-                    join(C21, result, n / 2, 0);
-                    join(C22, result, n / 2, n / 2);
-
-                    return result;
-
-                }
+                return result;
 
             }
+
         } else if (m1.length == m2[0].length) {
             result = new int[m1.length][m2[0].length];//case:normal multiplication matrix
             int i, j, l;
@@ -178,6 +176,15 @@ public class Ab1Impl implements Ab1 {
 
         //return new int[0][];//vorgegeben ????????
         return null;
+    }
+
+    public int[][] halfMatrix(int n) {
+        int[][] m;
+        if (n % 2 != 0) {
+            return m = new int[n / 2 + 1][n / 2 + 1];
+        } else {
+            return m = new int[n / 2][n / 2];
+        }
     }
 
 
