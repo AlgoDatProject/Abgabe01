@@ -104,25 +104,77 @@ public class Ab1Impl implements Ab1 {
 
         int[][] result;
 
-        int k = 3;// Dimension k
+        int k = 3; //Dimension
 
-        //check if the arrays are the same length
-        if (m1.length >= k && m1.length == m2.length && m1[0].length == m2[0].length && m1.length == m2[0].length) {    //case one: Strassen Algorithmus
-            int n = m1.length;
-            result = new int[n][n];
+        if (m1.length < k && m1.length == m2[0].length) {           //case:normal multiplication matrix
+            result = new int[m1.length][m2[0].length];
+            int i, j, l;
+            for (i = 0; i < m1.length; i++) {
+                for (j = 0; j < m2[0].length; j++) {
+                    int sum = 0;
+                    for (l = 0; l < m2.length; l++) {
+                        sum = sum + m1[i][l] * m2[l][j];
+                        result[i][j] = sum;
+                    }
+                }
+            }
+
+            return result;
+
+        } else {
+
+            return strassen(m1, m2);
+        }
+    }
+
+        public int[][]strassen (int[][]m1,int [][]m2){
+
+
+            int n= m1.length;
+            int [][] result=new int[n][n];
+
+            if((n%2!=0)&& (n!=1)) {           //case 2: non-quadratic matrix
+
+                int[][] m11, m22, m3;
+                int n1 = n + 1;
+
+                m11 = new int[n1][n1];
+                m22 = new int[n1][n1];
+                m3 = new int[n1][n1];
+
+
+                for (int i = 0; i < n; i++) {
+                    for (int j = 0; j < n; j++) {
+                        m11[i][j] = m1[i][j];
+                        m22[i][j] = m2[i][j];
+                    }
+                }
+                m3 = strassen(m11, m22);
+
+                for (int i = 0; i < n; i++) {
+                    for (int j = 0; j < n; j++) {
+                        result[i][j] = m3[i][j];
+                    }
+                }
+                return result;
+
+
+            }
 
 
             if (n == 1) {
                 result[0][0] = m1[0][0] * m2[0][0];
-            } else {
-                int[][] m111 = halfMatrix(n);;
-                int[][] m112 = halfMatrix(n);;
-                int[][] m121 = halfMatrix(n);;
-                int[][] m122 = halfMatrix(n);;
-                int[][] m211 = halfMatrix(n);;
-                int[][] m212 = halfMatrix(n);;
-                int[][] m221 = halfMatrix(n);;
-                int[][] m222 = halfMatrix(n);;
+            }
+
+            else {
+                int[][] m111 = halfMatrix(n);
+                int[][] m112 = halfMatrix(n);
+                int[][] m121 = halfMatrix(n);
+                int[][] m122 = halfMatrix(n);
+                int[][] m211 = halfMatrix(n);
+                int[][] m212 = halfMatrix(n);
+                int[][] m221 = halfMatrix(n);
+                int[][] m222 = halfMatrix(n);
 
                 split(m1, m111, 0, 0);             //Dividing matrix into 4 halves
                 split(m1, m112, 0, n / 2);
@@ -134,57 +186,40 @@ public class Ab1Impl implements Ab1 {
                 split(m2, m221, n / 2, 0);
                 split(m2, m222, n / 2, n / 2);
 
-                int[][] M1 = mult(add(m111, m122), add(m211, m222)); //auxiliary matrix
-                int[][] M2 = mult(add(m121, m122), m211);
-                int[][] M3 = mult(m111, sub(m212, m222));
-                int[][] M4 = mult(m122, sub(m221, m211));
-                int[][] M5 = mult(add(m111, m112), m222);
-                int[][] M6 = mult(sub(m121, m111), add(m211, m212));
-                int[][] M7 = mult(sub(m112, m122), add(m221, m222));
+                int[][] M1 = strassen(add(m111, m122), add(m211, m222)); //auxiliary matrix
+                int[][] M2 = strassen(add(m121, m122), m211);
+                int[][] M3 = strassen(m111, sub(m212, m222));
+                int[][] M4 = strassen(m122, sub(m221, m211));
+                int[][] M5 = strassen(add(m111, m112), m222);
+                int[][] M6 = strassen(sub(m121, m111), add(m211, m212));
+                int[][] M7 = strassen(sub(m112, m122), add(m221, m222));
 
-                int[][] C11 = add(sub(add(M1, M4), M5), M7); //result
+                int[][] C11 = add(sub(add(M1, M4), M5), M7);        //result
                 int[][] C12 = add(M3, M5);
                 int[][] C21 = add(M2, M4);
                 int[][] C22 = add(sub(add(M1, M3), M2), M6);
 
-                join(C11, result, 0, 0); //join 4 halves into one result matrix
+                join(C11, result, 0, 0);           //join 4 halves into one result matrix
                 join(C12, result, 0, n / 2);
                 join(C21, result, n / 2, 0);
                 join(C22, result, n / 2, n / 2);
 
-                return result;
 
             }
 
-        } else if (m1.length == m2[0].length) {
-            result = new int[m1.length][m2[0].length];//case:normal multiplication matrix
-            int i, j, l;
-            for (i = 0; i < m1.length; i++) {
-                for (j = 0; j < m2[0].length; j++) {
-                    int sum = 0;
-                    for (l = 0; l < m2.length; l++) {
-                        sum = sum + m1[i][l] * m2[l][j];
-                        result[i][j] = sum;
-                    }
-                }
-            }
-            return result;
-
-
-        }
 
 
         //return new int[0][];//vorgegeben ????????
-        return null;
+        return result;
     }
 
     public int[][] halfMatrix(int n) {
         int[][] m;
-        if (n % 2 != 0) {
-            return m = new int[n / 2 + 1][n / 2 + 1];
-        } else {
+       // if (n % 2 != 0) {
+         //   return m = new int[n / 2 + 1][n / 2 + 1];
+       // } else {
             return m = new int[n / 2][n / 2];
-        }
+        //}
     }
 
 
@@ -212,7 +247,7 @@ public class Ab1Impl implements Ab1 {
         return m3;
     }
 
-    public void split(int[][] A, int[][] B, int i, int j) { //function to split the matrix into little matrices
+    public void split(int[][] A, int[][] B, int i, int j) {  //function to split the matrix into little matrices
         for (int i1 = 0, i2 = i; i1 < B.length; i1++, i2++) {
             for (int j1 = 0, j2 = j; j1 < B.length; j1++, j2++) {
                 B[i1][j1] = A[i2][j2];
@@ -221,7 +256,7 @@ public class Ab1Impl implements Ab1 {
         }
     }
 
-    public void join(int[][] B, int[][] A, int i, int j) { //function to join the matrices into one matrix
+    public void join(int[][] B, int[][] A, int i, int j) {  //function to join the matrices into one matrix
         for (int i1 = 0, i2 = i; i1 < B.length; i1++, i2++) {
             for (int j1 = 0, j2 = j; j1 < B.length; j1++, j2++) {
                 A[i2][j2] = B[i1][j1];
