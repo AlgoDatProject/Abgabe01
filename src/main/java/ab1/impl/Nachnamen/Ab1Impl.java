@@ -82,12 +82,20 @@ public class Ab1Impl implements Ab1 {
         arr[pos2] = holder;
     }
 
-    private int getPivot(int low, int high) { //Receives low and high index for the partitions
-        return (high + low) / 2;  //Returns random number between the range of low and high
+
+    private int getPivot(int low, int high, Integer[] arr) { //Receives low and high index for the partitions
+        int mid = (low + high) / 2;
+        int pivot = arr[low] + arr[high] + arr[mid] - Math.min(Math.min(arr[low], arr[high]), arr[mid]) - Math.max(Math.max(arr[low], arr[high]), arr[mid]);
+
+        if (pivot == arr[low])
+            return low;
+        else if (pivot == arr[high])
+            return high;
+        return mid;//Returns random number between the range of low and high
     }
 
     private int parition(Integer[] arr, int low, int high) {
-        swap(arr, low, getPivot(low, high)); //Getting an Pivot within the given range of low and high + Swap swaps pivot to the leftmost position
+        swap(arr, low, getPivot(low, high, arr)); //Getting an Pivot within the given range of low and high + Swap swaps pivot to the leftmost position
         int stop = low + 1; // Left pointer stop is our border; Setting it just to the right of the pivot
         for (int i = stop; i <= high; i++) { // Iterate thorugh items and compare them to the pivot (arr[low])
             if (arr[i] < arr[low]) {
@@ -99,12 +107,13 @@ public class Ab1Impl implements Ab1 {
     }
 
 
+
     @Override
     public int[][] mult(int[][] m1, int[][] m2) {
 
         int[][] result;
 
-        int k = 3; //Dimension
+        int k = 32; //Dimension
 
         if (m1.length < k && m1.length == m2[0].length) {           //case:normal multiplication matrix
             result = new int[m1.length][m2[0].length];
@@ -131,9 +140,10 @@ public class Ab1Impl implements Ab1 {
 
 
         int n = m1.length;
+        int m = m1[0].length;
         int[][] result = new int[n][n];
 
-        if ((n % 2 != 0) && (n != 1)) {           //case 2: non-quadratic matrix
+        if (((n % 2 != 0) && (n != 1)) || (n != m)) {           //case 2: non-quadratic matrix
 
             int[][] m11, m22, m3;
             int n1 = n + 1;
