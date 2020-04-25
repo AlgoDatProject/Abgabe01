@@ -64,26 +64,26 @@ public class Ab1Impl implements Ab1 {
 
 
     public void quickSortStable(Integer[] data) {
-        sort(data, 0, data.length - 1);  //calling the private recursive method with the full array and the first and last indicies
+        sortArray(data, 0, data.length - 1);  //calling the private recursive method with the full array and the first and last indicies
     }
 
-    private void sort(Integer[] arr, int low, int high) {
+    private void sortArray(Integer[] arr, int low, int high) {
         if (low < high + 1) { //Checks if there is more than one Item to sort
             int part = parition(arr, low, high); //Gets a new Pivot-Element
-            sort(arr, low, part - 1); //Recursive call for the left partition
-            sort(arr, part + 1, high); //Recursive callf for the right partition
+            sortArray(arr, low, part - 1); //Recursive call for the left partition
+            sortArray(arr, part + 1, high); //Recursive callf for the right partition
         }
 
     }
 
-    private void swap(Integer[] arr, int pos1, int pos2) { // Utility funktion for swaping positions in the Array
+    private void swapIntegers(Integer[] arr, int pos1, int pos2) { // Utility funktion for swaping positions in the Array
         int holder = arr[pos1]; //Placeholder for the value on position1
         arr[pos1] = arr[pos2];
         arr[pos2] = holder;
     }
 
 
-    private int getPivot(int low, int high, Integer[] arr) { //Receives low and high index for the partitions
+    private int getPivotElement(int low, int high, Integer[] arr) { //Receives low and high index for the partitions
         int mid = (low + high) / 2;
         int pivot = arr[low] + arr[high] + arr[mid] - Math.min(Math.min(arr[low], arr[high]), arr[mid]) - Math.max(Math.max(arr[low], arr[high]), arr[mid]);
 
@@ -95,14 +95,14 @@ public class Ab1Impl implements Ab1 {
     }
 
     private int parition(Integer[] arr, int low, int high) {
-        swap(arr, low, getPivot(low, high, arr)); //Getting an Pivot within the given range of low and high + Swap swaps pivot to the leftmost position
+        swapIntegers(arr, low, getPivotElement(low, high, arr)); //Getting an Pivot within the given range of low and high + Swap swaps pivot to the leftmost position
         int stop = low + 1; // Left pointer stop is our border; Setting it just to the right of the pivot
         for (int i = stop; i <= high; i++) { // Iterate thorugh items and compare them to the pivot (arr[low])
             if (arr[i] < arr[low]) {
-                swap(arr, i, stop++); //Swap it with the border
+                swapIntegers(arr, i, stop++); //Swap it with the border
             }
         }
-        swap(arr, low, stop - 1); //Swap pivot to right position and return index of the pivot
+        swapIntegers(arr, low, stop - 1); //Swap pivot to right position and return index of the pivot
         return stop - 1;
     }
 
