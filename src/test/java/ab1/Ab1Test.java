@@ -1,139 +1,272 @@
 package ab1;
 
 import ab1.impl.Nachnamen.Ab1Impl;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class Ab1Test {
-    private Ab1Impl impl;
-    private int arr[];
-    private Integer dataRaw[];
-    private Integer dataSorted[];
-    private Integer a[];
-    private Integer as[];
-    private int m1[][];
-    private int m2[][];
-    private int mErg[][];
-    private int m21[][];
-    private int m22[][];
-    private int m2Erg[][];
 
-    @BeforeEach
-    public void init() {
-        impl = new Ab1Impl();
-        arr = new int[]{1, 2, 3, 4, 5, 6};
-        dataRaw = new Integer[]{3, 6, 1, 10, 5, 7, 2, 9, 8, 4};
-        dataSorted = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        a = new Integer[]{36, 42, 47, 19, 98, 62, 98, 14, 4, 21, 71, 83, 93, 40, 63, 77, 88, 68, 5, 43, 11, 43, 80, 92};
-        as = new Integer[]{4, 5, 11, 14, 19, 21, 36, 40, 42, 43, 43, 47, 62, 63, 68, 71, 77, 80, 83, 88, 92, 93, 98, 98};
-        m1 = new int[][]{{1, 2, 3, 1},
-                {1, 2, 3, 1},
-                {1, 2, 3, 1},
-                {1, 1, 1, 1}};
+    private Random rand = new Random(System.currentTimeMillis());
 
-        m2 = new int[][]{{2, 3, 4, 1},
-                {2, 3, 4, 1},
-                {2, 3, 4, 1},
-                {1, 1, 1, 1}};
-        ;
+    private static Ab1 ab1Impl = new Ab1Impl();
 
-        mErg = new int[][]{{13, 19, 25, 7},
-                {13, 19, 25, 7},
-                {13, 19, 25, 7},
-                {7, 10, 13, 4}};
+    private static int pts = 0;
 
-        m21 = new int[][]{{2, 2, 3},
-                {1, 2, 1},
-                {-1, 2, 3}};
+    private static int NUM_TESTS = 100;
+    private static int ARRAY_SIZE_SMALL = 1000;
+    private static int ARRAY_SIZE_HUGE = 100000;
 
-        m22 = new int[][]{{-1, 2, 3},
-                {4, 1, 1},
-                {2, -2, 3}};
-
-        m2Erg = new int[][]{{12, 0, 17},
-                {9, 2, 8},
-                {15, -6, 8}};
-
-
-    }
-
-    @AfterEach
-    public void dispose() {
-        impl = null;
-        arr = null;
-        dataRaw = null;
-        dataSorted = null;
-        a = null;
-        as = null;
-        m1 = null;
-        m2 = null;
-        mErg = null;
-    }
-
+    private static int SIZE_MAT = 200;
 
     @Test
-    public void testCorrectElementBinarySearch() {
-        int search = 5;
+    public void testBinarySearch() {
+        for (int i = 0; i < NUM_TESTS; i++) {
+            int[] data = getRandomArray(ARRAY_SIZE_HUGE);
+            Arrays.sort(data);
 
-        int erg = impl.binarySearch(arr, search);
+            for (int j = 0; j < NUM_TESTS; j++) {
+                // Element sicher vorhanden
+                int value = data[rand.nextInt(ARRAY_SIZE_HUGE)];
 
-        Assertions.assertEquals(4, erg);
-    }
+                int pos = ab1Impl.binarySearch(data, value);
 
-    @Test
-    public void testElementNotFoundBinarySearch() {
-        int search = 8;
+                assertEquals(value, data[pos]);
+            }
 
-        int erg = impl.binarySearch(arr, search);
+            for (int j = 0; j < NUM_TESTS / 2; j++) {
+                // Element eventuell vorhanden
+                int value = Math.abs(rand.nextInt(2 * ARRAY_SIZE_HUGE));
 
-        Assertions.assertEquals(-1, erg);
+                int pos = ab1Impl.binarySearch(data, value);
+                int posRef = Arrays.binarySearch(data, value);
+                if (posRef < 0)
+                    posRef = -1;
 
+                if (posRef >= 0)
+                    assertEquals(value, data[pos]);
+                else
+                    assertEquals(-1, pos);
+            }
+
+        }
+
+        pts += 2;
     }
 
     @Test
     public void testShellSort() {
+        for (int i = 0; i < NUM_TESTS; i++) {
+            Integer[] data = getRandomArrayInteger(ARRAY_SIZE_SMALL);
 
-        impl.shellSort(dataRaw);
-        Assertions.assertArrayEquals(dataSorted, dataRaw);
-    }
+            ab1Impl.shellSort(data);
 
-    @Test
-    public void testShellSortLongArr() {
+            assertEquals(true, isSorted(data));
+        }
 
-        impl.shellSort(a);
-        Assertions.assertArrayEquals(as, a);
+        pts += 3;
     }
 
     @Test
     public void testQuickSort() {
+        for (int i = 0; i < NUM_TESTS; i++) {
+            Integer[] data = getRandomArrayInteger(ARRAY_SIZE_HUGE);
 
-        impl.quickSortStable(dataRaw);
-        Assertions.assertArrayEquals(dataSorted, dataRaw);
+            ab1Impl.quickSortStable(data);
 
+            assertEquals(true, isSorted(data));
+        }
+
+        pts += 2;
     }
 
     @Test
-    public void testQuickSortLongArr() {
+    public void testQuickSortStable() {
+        for (int i = 0; i < NUM_TESTS; i++) {
+            Integer[] data = getRandomArrayInteger(ARRAY_SIZE_SMALL);
+            Integer[] dataOriginal = copyArray(data);
 
-        impl.quickSortStable(a);
-        Assertions.assertArrayEquals(a, as);
+            ab1Impl.quickSortStable(data);
 
+            assertEquals(true, isSorted(data));
+            assertEquals(true, checkStableSorting(data, dataOriginal));
+        }
+
+        pts += 3;
     }
 
     @Test
-    public void testMatrixMult4x4() {
+    public void testMatMultSquare() {
+        for (int i = 0; i < NUM_TESTS; i++) {
+            int[][] mat1 = getRandomMat(SIZE_MAT, SIZE_MAT);
+            int[][] mat2 = getRandomMat(SIZE_MAT, SIZE_MAT);
 
-        int[][] matrix = impl.mult(m1, m2);
+            int[][] mat3 = ab1Impl.mult(mat1, mat2);
 
-        Assertions.assertArrayEquals(mErg, matrix);
+            assertTrue(checkMat(matMult(mat1, mat2), mat3));
+        }
 
+        pts += 2;
     }
 
-    /*@Test
-    public void testMatrixMult3x3() {
-        int[][] matrix = impl.mult(m21, m22);
+    @Test
+    public void testMatMultNotSquare1() {
+        for (int i = 0; i < NUM_TESTS; i++) {
+            int[][] mat1 = getRandomMat(SIZE_MAT, SIZE_MAT / 2);
+            int[][] mat2 = getRandomMat(SIZE_MAT / 2, SIZE_MAT);
 
-        Assertions.assertArrayEquals(m2Erg, matrix);
-    }*/
+            int[][] mat3 = ab1Impl.mult(mat1, mat2);
 
+            assertTrue(checkMat(matMult(mat1, mat2), mat3));
+        }
 
+        pts += 1;
+    }
+
+    @Test
+    public void testMatMultNotSquare2() {
+        for (int i = 0; i < NUM_TESTS; i++) {
+            int[][] mat1 = getRandomMat(SIZE_MAT, SIZE_MAT / 2);
+            int[][] mat2 = getRandomMat(SIZE_MAT / 2, SIZE_MAT / 2);
+
+            int[][] mat3 = ab1Impl.mult(mat1, mat2);
+
+            assertTrue(checkMat(matMult(mat1, mat2), mat3));
+        }
+
+        pts += 1;
+    }
+
+    @Test
+    public void testMatMultCorrectness() {
+        int[][] mat1 = {
+                new int[]{5, 6, 1},
+                new int[]{-2, -1, 3},
+                new int[]{4, 7, -4}
+        };
+
+        int[][] mat2 = {
+                new int[]{0, 2, 5},
+                new int[]{6, 8, 3},
+                new int[]{4, -2, -1}
+        };
+
+        int[][] expected = {
+                new int[]{40, 56, 42},
+                new int[]{6, -18, -16},
+                new int[]{26, 72, 45}
+        };
+
+        int[][] actual = ab1Impl.mult(mat1, mat2);
+
+        assertArrayEquals(expected[0], actual[0]);
+        assertArrayEquals(expected[1], actual[1]);
+        assertArrayEquals(expected[2], actual[2]);
+
+        pts += 1;
+    }
+
+    @AfterAll
+    public static void printPts() {
+        System.out.println("Punkte: " + pts);
+    }
+
+    private boolean checkMat(int[][] mat1, int[][] mat2) {
+        if (mat1.length != mat2.length)
+            return false;
+
+        for (int i = 0; i < mat1.length; i++) {
+            if (!Arrays.equals(mat1[i], mat2[i]))
+                return false;
+        }
+
+        return true;
+    }
+
+    private boolean checkStableSorting(Integer[] data, Integer[] dataOriginal) {
+        for (int i = 0; i < data.length; i++) {
+            Integer curValue = data[i];
+
+            // lese die gleichen Keys entsprechend der Reihenfolge aus den Daten
+            List<Integer> filteredDataSameValue = Arrays.stream(data).filter(d -> d.intValue() == curValue.intValue()).collect(Collectors.toList());
+            List<Integer> filteredDataOriginalSameValue = Arrays.stream(dataOriginal).filter(d -> d.intValue() == curValue.intValue()).collect(Collectors.toList());
+
+            if (filteredDataSameValue.size() != filteredDataOriginalSameValue.size())
+                return false;
+
+            for (int j = 0; j < filteredDataSameValue.size(); j++) {
+                // teste, ob die Integer Objekte gleich sind (dh die Reihenfolge stimmer -> stabil)
+                if (filteredDataSameValue.get(j) != filteredDataOriginalSameValue.get(j))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    private int[] getRandomArray(int size) {
+        int[] arr = new int[size];
+        for (int i = 0; i < size; i++) {
+            arr[i] = Math.abs(rand.nextInt(2 * size));
+        }
+        return arr;
+    }
+
+    private int[][] getRandomMat(int x, int y) {
+        int[][] mat = new int[x][y];
+
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
+                mat[i][j] = Math.abs(rand.nextInt(mat.length));
+            }
+        }
+
+        return mat;
+    }
+
+    private Integer[] getRandomArrayInteger(int size) {
+        Integer[] arr = new Integer[size];
+        for (int i = 0; i < size; i++) {
+            arr[i] = Integer.valueOf(Math.abs(rand.nextInt(2 * size)));
+        }
+        return arr;
+    }
+
+    private boolean isSorted(Integer[] data) {
+        for (int i = 0; i < data.length - 1; i++) {
+            if (data[i] > data[i + 1])
+                return false;
+        }
+        return true;
+    }
+
+    private Integer[] copyArray(Integer[] data) {
+        return data.clone();
+    }
+
+    private int[][] matMult(int[][] m1, int[][] m2) {
+        int dim1 = m1.length;    // x of m1
+        int dim2 = m2.length;   // x of m2 = y of m1
+        int dim3 = m2[0].length; // y of m2
+
+        int[][] result = new int[dim1][dim3];
+
+        for (int i = 0; i < dim1; i++) {
+            for (int j = 0; j < dim3; j++) {
+                int val = 0;
+                for (int k = 0; k < dim2; k++) {
+                    val += m1[i][k] * m2[k][j];
+                }
+                result[i][j] = val;
+            }
+        }
+
+        return result;
+    }
 }
