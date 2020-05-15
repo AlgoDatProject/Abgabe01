@@ -1,6 +1,6 @@
 package ab1;
 
-import ab1.impl.Nachnamen.Ab1Impl;
+import ab1.impl.Oraze_Röttl_Miklau.Ab1Impl;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +19,7 @@ public class Ab1Test {
 
     private static int pts = 0;
 
-    private static int NUM_TESTS = 100;
+    private static int NUM_TESTS = 10;
     private static int ARRAY_SIZE_SMALL = 1000;
     private static int ARRAY_SIZE_HUGE = 100000;
 
