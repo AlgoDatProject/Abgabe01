@@ -1,4 +1,4 @@
-package ab1.impl.Nachnamen;
+package ab1.impl.Oraze_Röttl_Miklau;
 
 import ab1.Ab1;
 
