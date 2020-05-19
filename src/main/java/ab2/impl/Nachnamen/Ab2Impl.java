@@ -1,4 +1,4 @@
-package ab2.impl;
+package ab2.impl.Nachnamen;
 
 import ab2.Ab2;
 
