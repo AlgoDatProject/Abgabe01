@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 public class TestQuickSelect {
 
     private int[] myArr;
+    private int[] sortedInGroups;
     private int[] sorted;
     private int[] medians;
     private int[] pivots;
@@ -21,7 +22,8 @@ public class TestQuickSelect {
     @BeforeEach
     public void init() {
         myArr = new int[]{10, 20, 8, 4, 7, 1, 11, 6, 3, 2};
-        sorted = new int[]{4, 7, 8, 10, 20, 1, 2, 3, 6, 11};
+        sortedInGroups = new int[]{4, 7, 8, 10, 20, 1, 2, 3, 6, 11};
+        sorted = new int[]{1, 2, 3, 4, 6, 7, 8, 10, 11, 20};
         medians = new int[]{8, 3};
         pivots = new int[]{8, 10, 20, 4, 7};
         quickSelect = new Ab2Impl();
@@ -31,6 +33,7 @@ public class TestQuickSelect {
     @AfterEach
     public void tearDown() {
         myArr = null;
+        sortedInGroups = null;
         sorted = null;
         medians = null;
         quickSelect = null;
@@ -40,12 +43,12 @@ public class TestQuickSelect {
 
     @Test
     public void testSortGroup() {
-        Assertions.assertArrayEquals(sorted, quickSelect.sortGroups(myArr));
+        Assertions.assertArrayEquals(sortedInGroups, quickSelect.sortGroups(myArr));
     }
 
     @Test
     public void testMedians() {
-        Assertions.assertArrayEquals(medians, quickSelect.getMedians(sorted));
+        Assertions.assertArrayEquals(medians, quickSelect.getMedians(sortedInGroups));
     }
 
     @Test
@@ -57,18 +60,39 @@ public class TestQuickSelect {
 
     @Test
     public void testPartitioning() {
-        int real = quickSelect.partition(pivots, 7);
-        int[] expArr = new int[]{4, 7, 20, 10, 8};
-        int expPos = 1;
-        Assertions.assertArrayEquals(expArr, pivots);
+        int real = quickSelect.partition(pivots, 10);
+        int expPos = 3;
         Assertions.assertEquals(expPos, real);
 
     }
 
     @Test
     public void testQuickSelect() {
-        int k = quickSelect.quickselect(myArr, 8);
-        Assertions.assertEquals(11, k);
+        for (int i = 0; i < myArr.length; i++) {
+            int k = quickSelect.quickselect(myArr, i + 1);
+            Assertions.assertEquals(sorted[i], k);
+        }
+
     }
+
+    @Test
+    public void testPartitionMore() {
+        int pivot = 7;
+        quickSelect.partition(myArr, pivot);
+        for (int i = 0; i < myArr.length; i++) {
+            if (myArr[i] < pivot) {
+                for (int j = 0; j < myArr.length; j++) {
+                    if (myArr[j] == pivot) break;
+                    Assertions.assertTrue(myArr[j] < pivot);
+                }
+            } else {
+                for (int j = myArr.length - 1; j > 0; j--) {
+                    if (myArr[j] == pivot) break;
+                    Assertions.assertTrue(myArr[j] > pivot);
+                }
+            }
+        }
+    }
+
 
 }

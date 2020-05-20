@@ -36,13 +36,13 @@ public class Ab2Impl implements Ab2 {
             }
             return quickselect(dataRec, k);
         } else {
-            int[] dataRec = new int[data.length - (pivot - 1)];
+            int[] dataRec = new int[data.length - posPivot];
             int index = 0;
-            for (int i = pivot - 1; i < data.length; i++) {
+            for (int i = posPivot - 1; i < data.length; i++) {
                 dataRec[index] = data[i];
                 index++;
             }
-            return quickselect(dataRec, k - posPivot - 1);
+            return quickselect(dataRec, k - posPivot);
         }
 
     }
@@ -95,8 +95,10 @@ public class Ab2Impl implements Ab2 {
     public int[] getMedians(int[] data) {
         int length1 = data.length / 5;
         int lengthBoth = 0;
-        if ((data.length % 5) != 0) {
+        if ((data.length % 5) != 0 && data.length > 5) {
             lengthBoth = length1 + 1;
+        } else if ((data.length % 5) != 0) {
+            lengthBoth = 1;
         } else {
             lengthBoth = length1;
         }
@@ -161,9 +163,9 @@ public class Ab2Impl implements Ab2 {
                 }
             }
         } else {
+            int index = 1;
             for (int i = 0; i < data.length; i++) {
 
-                int index = i + 1;
                 if (index == data.length) {
                     break;
                 }
@@ -175,7 +177,7 @@ public class Ab2Impl implements Ab2 {
                     int var = data[tempIndex];
                     data[tempIndex] = data[tempIndex - 1];
                     data[tempIndex - 1] = var;
-                    if (tempIndex - i - 1 == 0) {
+                    if (tempIndex - 1 == 0) {
                         break;
                     }
                     tempIndex--;
