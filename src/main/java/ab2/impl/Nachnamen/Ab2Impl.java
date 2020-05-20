@@ -36,13 +36,13 @@ public class Ab2Impl implements Ab2 {
             }
             return quickselect(dataRec, k);
         } else {
-            int[] dataRec = new int[data.length - pivot];
+            int[] dataRec = new int[data.length - (pivot - 1)];
             int index = 0;
-            for (int i = pivot; i < data.length; i++) {
+            for (int i = pivot - 1; i < data.length; i++) {
                 dataRec[index] = data[i];
                 index++;
             }
-            return quickselect(dataRec, k - posPivot);
+            return quickselect(dataRec, k - posPivot - 1);
         }
 
     }
@@ -56,33 +56,34 @@ public class Ab2Impl implements Ab2 {
      */
     public int partition(int[] data, int pivot) {
         int low = 0;
-        int high = data.length - 1;
-        int i = (low - 1); // index of smaller element
-        for (int j = low; j < high; j++) {
-            // If current element is smaller than the pivot
-            if (data[j] < pivot) {
-                i++;
-
-                // swap arr[i] and arr[j]
-                int temp = data[i];
-                data[i] = data[j];
-                data[j] = temp;
-            }
-        }
-
-        // swap arr[i+1] and arr[high] (or pivot)
-        int temp = data[i + 1];
-        data[i + 1] = data[high];
-        data[high] = temp;
-
         int pos = 0;
-        for (int j = 0; j < high; j++) {
-            if (data[j] == pivot) {
-                pos = j;
-                break;
+        for (int i = 0; i < data.length; i++) {
+            if (data[i] == pivot) {
+                pos = i;
             }
         }
-        return pos;
+        swap(data, 0, pos);
+        int stop = low + 1; // Left pointer stop is our border; Setting it just to the right of the pivot
+        for (int i = stop; i < data.length; i++) { // Iterate thorugh items and compare them to the pivot (arr[low])
+            if (data[i] < data[low]) {
+                swap(data, i, stop++); //Swap it with the border
+            }
+        }
+        swap(data, low, stop - 1); //Swap pivot to right position and return index of the pivot
+        return stop - 1;
+    }
+
+    /**
+     * helper method for partitioning method
+     *
+     * @param arr  data array
+     * @param pos1 swap position with
+     * @param pos2 position to swap
+     */
+    private void swap(int[] arr, int pos1, int pos2) {
+        int holder = arr[pos1];
+        arr[pos1] = arr[pos2];
+        arr[pos2] = holder;
     }
 
     /**
@@ -92,18 +93,39 @@ public class Ab2Impl implements Ab2 {
      * @return array of medians out of a given input array
      */
     public int[] getMedians(int[] data) {
-        int length;
+        int length1 = data.length / 5;
+        int lengthBoth = 0;
         if ((data.length % 5) != 0) {
-            length = data.length / 5 + 1;
+            lengthBoth = length1 + 1;
         } else {
-            length = data.length / 5;
+            lengthBoth = length1;
         }
-        int[] medians = new int[length];
-        int index = 0;
-        for (int i = 2; i < data.length; i += 5) {
-            medians[index] = data[i];
-            index++;
+
+        int[] medians;
+
+        //fill first part of medians
+        int[] medians1 = new int[length1];
+        int index = 2;
+        for (int i = 0; i < length1; i++) {
+            medians1[i] = data[index];
+            index += 5;
         }
+
+        //fill first part in final median array
+        medians = new int[lengthBoth];
+        for (int i = 0; i < medians1.length; i++) {
+            medians[i] = medians1[i];
+        }
+
+        //get last median if it exists
+        if (lengthBoth > length1) {
+            int[] dataOff = new int[data.length % 5];
+            for (int i = 0; i < dataOff.length; i++) {
+                dataOff[i] = data[data.length - dataOff.length + i];
+            }
+            medians[lengthBoth - 1] = dataOff[dataOff.length / 2];
+        }
+
         return medians;
     }
 

@@ -20,9 +20,9 @@ public class TestQuickSelect {
 
     @BeforeEach
     public void init() {
-        myArr = new int[]{10, 20, 8, 4, 7, 1, 11, 6, 3, 2, 30, 21, 12, 34, 19};
-        sorted = new int[]{4, 7, 8, 10, 20, 1, 2, 3, 6, 11, 12, 19, 21, 30, 34};
-        medians = new int[]{8, 3, 21};
+        myArr = new int[]{10, 20, 8, 4, 7, 1, 11, 6, 3, 2};
+        sorted = new int[]{4, 7, 8, 10, 20, 1, 2, 3, 6, 11};
+        medians = new int[]{8, 3};
         pivots = new int[]{8, 10, 20, 4, 7};
         quickSelect = new Ab2Impl();
 
@@ -49,10 +49,17 @@ public class TestQuickSelect {
     }
 
     @Test
+    public void testCornerCaseMedians() {
+        int[] arr = new int[]{1, 4, 6, 8, 13, 7, 10, 13, 15, 20, 17, 21, 29, 30};
+        int[] exp = new int[]{6, 13, 29};
+        Assertions.assertArrayEquals(exp, quickSelect.getMedians(arr));
+    }
+
+    @Test
     public void testPartitioning() {
-        int real = quickSelect.partition(pivots, 10);
-        int[] expArr = new int[]{8, 4, 7, 10, 20};
-        int expPos = 3;
+        int real = quickSelect.partition(pivots, 7);
+        int[] expArr = new int[]{4, 7, 20, 10, 8};
+        int expPos = 1;
         Assertions.assertArrayEquals(expArr, pivots);
         Assertions.assertEquals(expPos, real);
 
@@ -60,8 +67,8 @@ public class TestQuickSelect {
 
     @Test
     public void testQuickSelect() {
-        int k = quickSelect.quickselect(myArr, 3);
-        Assertions.assertEquals(3, k);
+        int k = quickSelect.quickselect(myArr, 8);
+        Assertions.assertEquals(11, k);
     }
 
 }
