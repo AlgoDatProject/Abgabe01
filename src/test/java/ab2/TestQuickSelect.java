@@ -22,12 +22,12 @@ public class TestQuickSelect {
 
     @BeforeEach
     public void init() {
-        myArr = new int[]{10, 20, 8, 4, 7, 1, 11, 6, 3, 2};
-        sortedInGroups = new int[]{4, 7, 8, 10, 20, 1, 2, 3, 6, 11};
-        sorted = new int[]{1, 2, 3, 4, 6, 7, 8, 10, 11, 20};
-        medians = new int[]{8, 3};
+        myArr = new int[]{10, 20, 8, 4, 7, 1, 11, 6, 4, 2, 22, 5};
+        sortedInGroups = new int[]{4, 7, 8, 10, 20, 1, 2, 4, 6, 11, 5, 22};
+        sorted = new int[]{1, 2, 4, 4, 5, 6, 7, 8, 10, 11, 20, 22};
+        medians = new int[]{8, 4, 22};
         pivots = new int[]{8, 10, 20, 4, 7};
-        sortedBack = new int[]{20, 11, 10, 8, 7, 6, 4, 3, 2, 1};
+        sortedBack = new int[]{22, 20, 11, 10, 8, 7, 6, 5, 4, 4, 2, 1};
         quickSelect = new Ab2Impl();
 
     }
@@ -68,6 +68,13 @@ public class TestQuickSelect {
         Assertions.assertEquals(expPos, real);
 
     }
+
+    @Test
+    public void testQuickSingleCall() {
+        int k = quickSelect.quickselect(myArr, 7);
+        Assertions.assertEquals(sortedBack[6], k);
+    }
+
 
     @Test
     public void testQuickSelect() {
