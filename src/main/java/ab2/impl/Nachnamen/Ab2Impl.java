@@ -14,46 +14,49 @@ public class Ab2Impl implements Ab2 {
         //divide into groups of 5 each
         data = sortGroups(data);
 
-        //check if group smaller 5
-        if (data.length < 5) {
-            return data[k];
-        }
-
         //get array of medians
         int[] medians = getMedians(data);
 
-        int pivot = quickselect(medians, ((data.length + 1) / 5) / 2);
+        int pivot;
 
-        int posPivot = partition(data, pivot);
-
-        if (k == posPivot) {
-            return pivot;
+        //check if group smaller 5
+        if (medians.length <= 5) {
+            medians = sortGroups(medians);
+            pivot = medians[medians.length / 2];
+        } else {
+            pivot = quickselect(medians, medians.length / 2);
         }
-        if (k < posPivot) {
-            int[] dataRec = new int[posPivot - 1];
+
+        int posPivot = (data.length - partition(data, pivot) - 1);
+
+        if (k - 1 < posPivot) {
+            int[] dataRec = new int[posPivot];
+            int index = data.length - posPivot;
+            for (int i = 0; i < dataRec.length; i++) {
+                dataRec[i] = data[index];
+                index++;
+            }
+            return quickselect(dataRec, k);
+        } else if (k - 1 > posPivot) {
+            int[] dataRec = new int[data.length - posPivot - 1];
             for (int i = 0; i < dataRec.length; i++) {
                 dataRec[i] = data[i];
             }
-            return quickselect(dataRec, k);
+            return quickselect(dataRec, k - posPivot - 1);
         } else {
-            int[] dataRec = new int[data.length - posPivot];
-            int index = 0;
-            for (int i = posPivot - 1; i < data.length; i++) {
-                dataRec[index] = data[i];
-                index++;
-            }
-            return quickselect(dataRec, k - posPivot);
+            return pivot;
         }
-
     }
+
 
     /**
      * Helper method for quickSelect algorithm
      *
      * @param data  group sorted array
      * @param pivot element which should be used as a pivot element
-     * @return the position of the pivot element after the partitioning
+     * @return the position of the pivot element in the partitioned array
      */
+
     public int partition(int[] data, int pivot) {
         int low = 0;
         int pos = 0;

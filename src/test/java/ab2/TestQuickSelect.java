@@ -16,6 +16,7 @@ public class TestQuickSelect {
     private int[] sortedInGroups;
     private int[] sorted;
     private int[] medians;
+    private int[] sortedBack;
     private int[] pivots;
     private Ab2Impl quickSelect;
 
@@ -26,6 +27,7 @@ public class TestQuickSelect {
         sorted = new int[]{1, 2, 3, 4, 6, 7, 8, 10, 11, 20};
         medians = new int[]{8, 3};
         pivots = new int[]{8, 10, 20, 4, 7};
+        sortedBack = new int[]{20, 11, 10, 8, 7, 6, 4, 3, 2, 1};
         quickSelect = new Ab2Impl();
 
     }
@@ -37,6 +39,7 @@ public class TestQuickSelect {
         sorted = null;
         medians = null;
         quickSelect = null;
+        sortedBack = null;
         pivots = null;
     }
 
@@ -70,7 +73,7 @@ public class TestQuickSelect {
     public void testQuickSelect() {
         for (int i = 0; i < myArr.length; i++) {
             int k = quickSelect.quickselect(myArr, i + 1);
-            Assertions.assertEquals(sorted[i], k);
+            Assertions.assertEquals(sortedBack[i], k);
         }
 
     }
