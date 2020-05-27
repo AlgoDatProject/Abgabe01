@@ -27,27 +27,26 @@ public class Ab2Impl implements Ab2 {
             pivot = quickselect(medians, medians.length / 2);
         }
 
-        int posPivot = (data.length - partition(data, pivot) - 1);
+        int posPivot = partition(data, pivot);
 
-        if (k - 1 < posPivot) {
-            int[] dataRec = new int[posPivot];
-            int index = data.length - posPivot;
+        if (k - 1 > posPivot) {
+            int[] dataRec = new int[data.length - posPivot - 1];
+            int index = posPivot + 1;
             for (int i = 0; i < dataRec.length; i++) {
                 dataRec[i] = data[index];
                 index++;
             }
-            return quickselect(dataRec, k);
-        } else if (k - 1 > posPivot) {
-            int[] dataRec = new int[data.length - posPivot - 1];
+            return quickselect(dataRec, k - posPivot - 1);
+        } else if (k - 1 < posPivot) {
+            int[] dataRec = new int[posPivot];
             for (int i = 0; i < dataRec.length; i++) {
                 dataRec[i] = data[i];
             }
-            return quickselect(dataRec, k - posPivot - 1);
+            return quickselect(dataRec, k);
         } else {
             return pivot;
         }
     }
-
 
     /**
      * Helper method for quickSelect algorithm
