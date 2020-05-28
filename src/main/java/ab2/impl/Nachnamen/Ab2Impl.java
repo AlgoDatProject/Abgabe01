@@ -6,6 +6,36 @@ public class Ab2Impl implements Ab2 {
 
     @Override
     public void toHeap(int[] data) {
+        for (int i = (data.length / 2) - 1; i >= 0 ; i--) {
+            int a = i;
+            while((a+1) * 2 - 1 < data.length ) {
+                int right = (a + 1) * 2;
+                int left = right - 1;
+                if (right >= data.length) {
+                    if (data[a] < data[left]) {
+                        int t = data[a];
+                        data[a] = data[left];
+                        data[left] = t;
+                        a = left;
+                    } else break;
+                } else {
+                    if (data[a] < data[left] || data[a] < data[right]) {
+                        if (data[right] < data[left]) {
+                            int t = data[a];
+                            data[a] = data[left];
+                            data[left] = t;
+                            a = left;
+                        } else {
+                            int t = data[a];
+                            data[a] = data[right];
+                            data[right] = t;
+                            a= right;
+                        }
+                    } else break;
+                }
+            }
+        }
+
     }
 
     @Override
