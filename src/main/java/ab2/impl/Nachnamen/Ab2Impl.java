@@ -227,25 +227,28 @@ public class Ab2Impl implements Ab2 {
 
         if (contains(hashtable, element) == false) { // If the Hastable already contains the element nothing happens
             if (checkIfFull(hashtable) == false) { // If the Hashtable is full, nothing happens
+
               if (hash == 0) { //Check if the Hash equals zero,
                     if (hashtable[hash] != -1) {
                         HashIsZero(hashtable, hash, element); // When it is zero and der is no empty space, HashIsZero-Method is called
                     } else {
                         hashtable[hash] = element; //If there is an empty space, the element is stored here
-                        containedInHashSet(hashtable, element);
                     }
-                } else if (hash == hashtable.length) { //Check if the Hash equals the Array-Size
+                }
+
+                else if (hash == hashtable.length) { //Check if the Hash equals the Array-Size
                     if (hashtable[hash] != 1) {
                         HashIsLength(hashtable, hash, element); //When yes and there is no empty space, HashIsLength-Method is called
                     } else {
                         hashtable[hash] = element;
-                        containedInHashSet(hashtable, element);
                     }
-                } else if (hash > 0 && hash < hashtable.length && hashtable[hash] != -1) { //Check if the Hash is in between the max and the min and if there is no free space
+                }
+                
+                 else if (hash > 0 && hash < hashtable.length && hashtable[hash] != -1) { //Check if the Hash is in between the max and the min and if there is no free space
                     FindPlace(hashtable, hash, element); //When there is no free space, we call FindPlace
                 } else {
                     hashtable[hash] = element; //If there is free space, we store the element here
-                    containedInHashSet(hashtable, element);
+
                 }
             }
         }
@@ -284,12 +287,12 @@ public class Ab2Impl implements Ab2 {
         }
         if (hash == 0 && hashtable[hash] == -1) { //When it is zero check if there is a free space, if yes store element here and return
             hashtable[hash] = el;
-            containedInHashSet(hashtable, el);
+
         } else if (hash == 0 && hashtable[hash] != -1) { // If no just return the table
-            containedInHashSet(hashtable, el);
+
         } else if (hashtable[hash] == -1) { // If there is a free space store the value here
             hashtable[hash] = el;
-            containedInHashSet(hashtable, el);
+
         }
     }
 
@@ -300,12 +303,11 @@ public class Ab2Impl implements Ab2 {
         }
         if (hash == 0 && hashtable[hash] == -1) {
             hashtable[hash] = el;
-            containedInHashSet(hashtable, el);
         } else if (hash == 0 || hashtable[hash] != -1) {
-            containedInHashSet(hashtable, el);
+
         } else if (hashtable[hash] == -1) {
             hashtable[hash] = el;
-            containedInHashSet(hashtable, el);
+
         }
     }
 
@@ -315,10 +317,8 @@ public class Ab2Impl implements Ab2 {
         }
         if (hashtable[hash] == -1) {
             hashtable[hash] = el;
-            containedInHashSet(hashtable, el);
-        } else if (hash == 0 && hashtable[hash] == -1) {
+            } else if (hash == 0 && hashtable[hash] == -1) {
             hashtable[hash] = el;
-            containedInHashSet(hashtable, el);
         } else if (hash == 0 && hashtable[hash] != -1) { // If there is no space call HashIsLength to check the upper Array
             HashIsLength(hashtable, hash, el);
         }
