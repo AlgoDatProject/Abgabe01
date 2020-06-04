@@ -220,150 +220,52 @@ public class Ab2Impl implements Ab2 {
         return data;
     }
 
-@Override
+    @Override
     public void insertIntoHashSet(int[] hashtable, int element) {
-        int currentSize = hashtable.length;
-        int hash = getHash(element, currentSize);
+      findPlace(hashtable, element, 0, getHash(hashtable.length, element));
+  }
 
-        if (contains(hashtable, element) == false) { // If the Hastable already contains the element nothing happens
-            if (checkIfFull(hashtable) == false) { // If the Hashtable is full, nothing happens
+  @Override
+  public boolean containedInHashSet(int[] hashtable, int element) {
+      return checkForElement(hashtable, element, 0, getHash(hashtable.length, element));
+  }
 
-              if (hash == 0) { //Check if the Hash equals zero,
-                    if (hashtable[hash] != -1) {
-                        HashIsZero(hashtable, hash, element); // When it is zero and der is no empty space, HashIsZero-Method is called
-                    } else {
-                        hashtable[hash] = element; //If there is an empty space, the element is stored here
-                    }
-                }
+  private boolean checkForElement(int[] hashtable, int element, int counting, int hash) {
+      while (counting < hashtable.length) {
+          int posi = (hash + counting) % hashtable.length;
 
-                else if (hash == hashtable.length) { //Check if the Hash equals the Array-Size
-                    if (hashtable[hash] != 1) {
-                        HashIsLength(hashtable, hash, element); //When yes and there is no empty space, HashIsLength-Method is called
-                    } else {
-                        hashtable[hash] = element;
-                    }
-                }
-                
-                 else if (hash > 0 && hash < hashtable.length && hashtable[hash] != -1) { //Check if the Hash is in between the max and the min and if there is no free space
-                    FindPlace(hashtable, hash, element); //When there is no free space, we call FindPlace
-                } else {
-                    hashtable[hash] = element; //If there is free space, we store the element here
+          if (hashtable[posi] == element) {
+              return true;
+          } else if (hashtable[posi] == -1) {
+              return false;
+          }
 
-                }
-            }
-        }
+          counting++;
+      }
+      return false;
+
+  }
 
 
-    }
+  private void findPlace(int[] hashtable, int element, int counting, int hash) {
+      while (counting < hashtable.length) {
+          int posi = (hash + counting) % hashtable.length;
 
-    private boolean contains(int[] hashmap, int element) {
-        for (int i = 0; i < hashmap.length; i++) {
-            if (hashmap[i] == element) {
-                return true;
-            }
-        }
-        return false;
-    }
+          if (hashtable[posi] == element) {
+              return;
+          } else if (hashtable[posi] == -1) {
+              hashtable[posi] = element;
+              return;
+          }
+          counting++;
+      }
+      throw new RuntimeException("The table you are trying to fill is already full");
 
-    private boolean checkIfFull(int[] hashmap) { //Checks if Array is full so it doesn`t go through the whole process
-        for (int i = 0; i < hashmap.length; i++) {
-            if (hashmap[i] == -1) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private int getHash(int el, int tableSize) { // Calculate where the Element should get stored
-        int hash = el % tableSize;
-        return hash;
-    }
-
-    private void HashIsZero(int[] hashtable, int hash, int el) {
-        hash = hashtable.length;
-
-        while (hashtable[hash] != -1 && hash > 0) { //Reduce as long as there is no free space or it is bigger than 0
-            hash--;
-        }
-        if (hash == 0 && hashtable[hash] == -1) { //When it is zero check if there is a free space, if yes store element here and return
-            hashtable[hash] = el;
-
-        } else if (hash == 0 && hashtable[hash] != -1) { // If no just return the table
-
-        } else if (hashtable[hash] == -1) { // If there is a free space store the value here
-            hashtable[hash] = el;
-
-        }
-    }
-
-    private void HashIsLength(int[] hashtable, int hash, int el) {
-        hash = hashtable.length;
-        while (hashtable[hash] != -1 && hash > 0) { //Same as in HashIsZero
-            hash--;
-        }
-        if (hash == 0 && hashtable[hash] == -1) {
-            hashtable[hash] = el;
-        } else if (hash == 0 || hashtable[hash] != -1) {
-
-        } else if (hashtable[hash] == -1) {
-            hashtable[hash] = el;
-
-        }
-    }
-
-    private void FindPlace(int[] hashtable, int hash, int el) {
-        while (hashtable[hash] != -1 && hash > 0) {
-            hash--;
-        }
-        if (hashtable[hash] == -1) {
-            hashtable[hash] = el;
-            } else if (hash == 0 && hashtable[hash] == -1) {
-            hashtable[hash] = el;
-        } else if (hash == 0 && hashtable[hash] != -1) { // If there is no space call HashIsLength to check the upper Array
-            HashIsLength(hashtable, hash, el);
-        }
-    }
+  }
 
 
-@Override
-    public boolean containedInHashSet(int[] hashtable, int element) {
-
-        int save = getHash(element, hashtable.length);
-        return findElement(hashtable, element, save);
-    }
-
-
-    public boolean findElement(int[] hashtable, int element, int save) {
-        if (save == 0) {
-            if (hashtable[save] == element) {
-                return true;
-            } else {
-                for (int i = hashtable.length; i > 0; i--) {
-                    if (hashtable[i] == element) {
-                        return true;
-                    }
-                }
-            }
-        } else if (save == hashtable.length) {
-            for (int i = hashtable.length; i > 0; i--) {
-                if (hashtable[i] == element) {
-                    return true;
-                }
-            }
-        } else if (save > 0 && save < hashtable.length) {
-            int counter = save;
-            while (counter > 0) {
-                if (hashtable[counter] == element) {
-                    return true;
-                }
-                counter--;
-            }
-            for (int i = hashtable.length; i > save; i--) {
-                if (hashtable[save] == element) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+  private int getHash(int tableSize, int el) {
+      int hash = el % tableSize;
+      return el;
+  }
 }
