@@ -222,38 +222,38 @@ public class Ab2Impl implements Ab2 {
 
     @Override
     public void insertIntoHashSet(int[] hashtable, int element) {
-      findPlace(hashtable, element, 0, getHash(hashtable.length, element));
+      findPlace(hashtable, element, 0, getHash(hashtable.length, element)); //Call findPlace to see, if the element can be insertet
   }
 
   @Override
   public boolean containedInHashSet(int[] hashtable, int element) {
-      return checkForElement(hashtable, element, 0, getHash(hashtable.length, element));
+      return checkForElement(hashtable, element, 0, getHash(hashtable.length, element)); //Call checkForElement to see, if the element is implemented
   }
 
   private boolean checkForElement(int[] hashtable, int element, int counting, int hash) {
       while (counting < hashtable.length) {
-          int posi = (hash + counting) % hashtable.length;
+          int posi = (hash + counting) % hashtable.length; //Position where we are looking in the Hashtable
 
-          if (hashtable[posi] == element) {
+          if (hashtable[posi] == element) { //If the Element is found here, we return true
               return true;
-          } else if (hashtable[posi] == -1) {
+          } else if (hashtable[posi] == -1) { // If the Place is empty we return false
               return false;
           }
 
-          counting++;
+          counting++; //to get to the next position
       }
-      return false;
+      return false; //if nothing is right we return false
 
   }
 
 
   private void findPlace(int[] hashtable, int element, int counting, int hash) {
       while (counting < hashtable.length) {
-          int posi = (hash + counting) % hashtable.length;
+          int posi = (hash + counting) % hashtable.length; //same as in chekForElement
 
-          if (hashtable[posi] == element) {
+          if (hashtable[posi] == element) { //If the Element is already inside just stop.
               return;
-          } else if (hashtable[posi] == -1) {
+          } else if (hashtable[posi] == -1) { //If we find an empty space, and it is free we insert the element
               hashtable[posi] = element;
               return;
           }
@@ -265,7 +265,7 @@ public class Ab2Impl implements Ab2 {
 
 
   private int getHash(int tableSize, int el) {
-      int hash = el % tableSize;
+      int hash = el % tableSize; //Gives the place, where the element should be stored originally 
       return el;
   }
 }
