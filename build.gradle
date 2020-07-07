@@ -27,6 +27,6 @@ task zip(type: Zip) {
     archiveFileName = "solution.zip"
     destinationDirectory = file("$buildDir")
 
-    from 'src/main/java/ab2/impl'
+    from 'src/main/java/ab3/impl'
 }
 

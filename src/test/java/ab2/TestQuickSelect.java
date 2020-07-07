@@ -1,6 +1,6 @@
 package ab2;
 
-import ab2.impl.Nachnamen.Ab2Impl;
+import ab2.impl.Oraze_Röttl_Miklau.Ab2Impl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

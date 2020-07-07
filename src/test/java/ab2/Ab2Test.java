@@ -1,6 +1,6 @@
 package ab2;
 
-import ab2.impl.Nachnamen.Ab2Impl;
+import ab2.impl.Oraze_Röttl_Miklau.Ab2Impl;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -17,9 +17,9 @@ public class Ab2Test {
 
     private static int pts = 0;
 
-    private static int NUM_TESTS = 10;
-    private static int ARRAY_SIZE_SMALL = 200;
-    private static int ARRAY_SIZE_LARGE = 500;
+    private static int NUM_TESTS = 100;
+    private static int ARRAY_SIZE_SMALL = 2000;
+    private static int ARRAY_SIZE_LARGE = 5000;
     private static int HASHSET_SIZE = 6691; // prime number
 
     //assertEquals
