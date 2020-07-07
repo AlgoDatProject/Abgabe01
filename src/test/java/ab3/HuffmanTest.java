@@ -50,7 +50,7 @@ public class HuffmanTest {
     }
 
     @Test
-    void testSortFrequency() {
+    public void testSortFrequency() {
         ArrayList expList = (ArrayList) listFrequency.clone();
         coder.sortFrequency(charList, listFrequency);
         Collections.sort(expList);
