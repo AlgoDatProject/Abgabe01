@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Set;
 
 /*********************************
  Created by Fabian Oraze on 07.07.20
@@ -59,6 +60,22 @@ public class HuffmanTest {
         for (int i = 0; i < charList.size(); i++) {
             Assertions.assertEquals(comp, charList.get(i));
             comp++;
+        }
+    }
+
+    @Test
+    public void testCorrectCodeLength() {
+        Set<AB3.SymbolCode> set = coder.huffmanCoding(charList, listFrequency);
+        for (AB3.SymbolCode code : set) {
+            char c = code.symbol;
+            int len = code.encoding.length();
+            if (c == 'f' || c == 'g'){
+                Assertions.assertEquals(2, len);
+            }else if (c == 'a' || c == 'b'){
+                Assertions.assertEquals(4, len);
+            }else {
+                Assertions.assertEquals(3, len);
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ package ab3.impl.Oraze_Röttl_Miklau;
 
 import ab3.AB3;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,17 +27,54 @@ public class AB3Impl implements AB3 {
         for (int i = 0; i < symbols.size(); i++) {
             tree.add(new HuffmanNode(frequency.get(i), symbols.get(i)));
         }
-        //loop which generates the huffman tree
+        //call which generates the huffman tree
         tree.generateCodeTree();
 
-        //TODO: traverse tree to get code for characters
+        //generate code set with the given huffman tree
+        Set<SymbolCode> codeSet = getCodeFromTree(tree);
 
+        return codeSet;
+    }
 
-        return null;
+    /**
+     * function which computes a set containing SymbolCode objects
+     * @param tree {@link MinHeap} object that already should have been transformed into a huffman tree
+     * @return set of SymbolCode objects which represent one char and its binary code each
+     */
+    public Set<SymbolCode> getCodeFromTree(MinHeap tree) {
+        Set<SymbolCode> codeSet = new HashSet<>();
+        try {
+            generateCodeSet(codeSet, tree.getNode(0), "");
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return codeSet;
+    }
+
+    /**
+     * recursive function which fills the set with objects
+     * @param codeSet set which should be filled with SymbolCode objects
+     * @param node node for each recursive call (note: first call with root node from tree)
+     * @param code String which represents the binary code for a single char (initial call empty -> "")
+     * @throws IllegalAccessException
+     */
+    public void generateCodeSet(Set codeSet, HuffmanNode node, String code) throws IllegalAccessException {
+        // if node is leaf node then exit recursive function
+        if (node.right == null && node.left == null) {
+            codeSet.add(new SymbolCode(node.symbol, code));
+            return;
+        }
+        //recursive function calls for left and right child node
+        generateCodeSet(codeSet, node.left, code + "0");
+        generateCodeSet(codeSet, node.right, code + "1");
     }
 
 
-    //for sorting arrays
+    /**
+     * function which sorts the lists according to the frequency with shellSort algorithm
+     * @param symbols list of char symbols
+     * @param frequency integer list of frequencies of each symbol
+     */
     public void sortFrequency(List<Character> symbols, List<Integer> frequency) {
 
         //dividing our length each time by 2 will decrease the gap distance every iteration and eventually end in a gap of only 1
@@ -104,18 +142,6 @@ public class AB3Impl implements AB3 {
             this.size = size;
             heap = new HuffmanNode[size];
             pointer = 0;
-        }
-
-        private HuffmanNode parent(int pos) {
-            return heap[pos / 2];
-        }
-
-        private HuffmanNode leftChild(int pos) {
-            return heap[(2 * pos)];
-        }
-
-        private HuffmanNode rightChild(int pos) {
-            return heap[(2 * pos) + 1];
         }
 
         public void add(HuffmanNode node) {
