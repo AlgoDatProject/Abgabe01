@@ -3,6 +3,7 @@ package ab3.impl.Oraze_Röttl_Miklau;
 import ab3.AB3;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -10,7 +11,75 @@ public class AB3Impl implements AB3 {
 
     @Override
     public SearchInfoKMP findPatternKMP(String text, String pattern) {
-        return null;
+        int indexText = 0;
+        int indexPattern = 0;
+        int[] rand = randTable(pattern);
+
+        LinkedList<Integer> positionsOut = new LinkedList<>();
+        LinkedList<Integer> jumpsOut = new LinkedList<>();
+
+        for (int k = 0; k < rand.length; k++) {
+            System.out.print(rand[k]);
+        }
+
+        System.out.println();
+
+        while (indexText < text.length()) {
+            if (text.charAt(indexText) == pattern.charAt(indexPattern)) {
+                indexText++;
+                indexPattern++;
+            }
+
+            if (indexPattern == pattern.length()) {
+                int startIndex = indexText - pattern.length();
+                System.out.println("Pattern found at index " + startIndex);
+                positionsOut.push(startIndex);
+
+                indexPattern = rand[indexPattern - 1];
+                jumpsOut.push(indexPattern);
+                System.out.println(indexPattern);
+
+            } else if (indexText < text.length() && pattern.charAt(indexPattern) != text.charAt(indexText)) {
+                if (indexPattern != 0) {
+                    indexPattern = rand[indexPattern - 1];
+                    jumpsOut.push(indexPattern);
+                } else {
+                    indexText++;
+                }
+            }
+        }
+
+        SearchInfoKMP out = new SearchInfoKMP(positionsOut, jumpsOut);
+
+        return out;
+    }
+
+
+    private int[] randTable(String pattern) {
+        int[] randTable = new int[pattern.length()];
+        randTable[0] = 0;
+
+        int j = 0;
+
+        for (int i = 1; i < pattern.length();) {
+            if (pattern.charAt(i) == pattern.charAt(j)) {
+                j++;
+                randTable[i] = j;
+                i++;
+            } else {
+                if (j != 0 ) {
+                    j = randTable[j - 1];
+                } else {
+                    randTable[i] = 0;
+                    i++;
+                }
+            }
+        }
+        return randTable;
+
+
+
+
     }
 
     @Override
