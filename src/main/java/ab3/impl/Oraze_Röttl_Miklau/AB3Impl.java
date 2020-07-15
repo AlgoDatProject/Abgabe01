@@ -20,6 +20,7 @@ public class AB3Impl implements AB3 {
 
       return search(pat,txt);
     }
+    
     public List<Integer> search (char pat [], char txt []){
         int M = pat.length;
         int N = txt.length;
