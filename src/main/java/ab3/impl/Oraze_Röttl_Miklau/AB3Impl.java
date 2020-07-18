@@ -2,6 +2,7 @@ package ab3.impl.Oraze_Röttl_Miklau;
 
 import ab3.AB3;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -84,7 +85,58 @@ public class AB3Impl implements AB3 {
 
     @Override
     public List<Integer> findPatternEndlAutomat(String text, String pattern) {
-        return null;
+      char [] pat = pattern.toCharArray();
+      char [] txt = text.toCharArray();
+
+      return search(pat,txt);
+    }
+    
+    public List<Integer> search (char pat [], char txt []){
+        int M = pat.length;
+        int N = txt.length;
+
+        int TF [][] = new int [M+1][NO_OF_CHAR];
+        List<Integer> lsg = new ArrayList();
+        computeTransFunction(pat, M, TF);
+
+        int j = 0;
+        for (int i = 0; i < N; i++){
+            j = TF[j][txt[i]];
+            if (j == M){
+                lsg.add((i - M + 1));
+            }
+        }
+        return lsg;
+    }
+
+    public static void computeTransFunction(char [] pat, int M, int TF [][]){
+        int i, lps = 0, x;
+
+        // Fill entries in first row
+        for (x = 0; x < NO_OF_CHAR; x++)
+        {
+            TF[0][x] = 0;
+        }
+        TF[0][pat[0]] = 1;
+
+        // Fill entries in other rows
+        for (i = 1; i < M; i++)
+        {
+            // Copy values from row at index lps
+            for (x = 0; x < NO_OF_CHAR; x++)
+            {
+                TF[i][x] = TF[lps][x];
+            }
+
+            // Update the entry corresponding to this character
+            TF[i][pat[i]] = i + 1;
+
+            // Update lps for next row to be filled
+            if (i < M)
+            {
+                lps = TF[lps][pat[i]];
+            }
+        }
     }
 
     @Override
