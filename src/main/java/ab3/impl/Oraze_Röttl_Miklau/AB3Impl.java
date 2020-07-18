@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Set;
 
 public class AB3Impl implements AB3 {
-  static int NO_OF_CHAR = 400; 
+    static int NO_OF_CHAR = 400;
+
 
 
     @Override
@@ -64,13 +65,13 @@ public class AB3Impl implements AB3 {
 
         int j = 0;
 
-        for (int i = 1; i < pattern.length();) {
+        for (int i = 1; i < pattern.length(); ) {
             if (pattern.charAt(i) == pattern.charAt(j)) {
                 j++;
                 randTable[i] = j;
                 i++;
             } else {
-                if (j != 0 ) {
+                if (j != 0) {
                     j = randTable[j - 1];
                 } else {
                     randTable[i] = 0;
@@ -81,52 +82,47 @@ public class AB3Impl implements AB3 {
         return randTable;
 
 
-
-
     }
 
     @Override
     public List<Integer> findPatternEndlAutomat(String text, String pattern) {
-      char [] pat = pattern.toCharArray();
-      char [] txt = text.toCharArray();
+        char[] pat = pattern.toCharArray();
+        char[] txt = text.toCharArray();
 
-      return search(pat,txt);
+        return search(pat, txt);
     }
 
-    public List<Integer> search (char pat [], char txt []){
+    public List<Integer> search(char pat[], char txt[]) {
         int M = pat.length;
         int N = txt.length;
 
-        int TF [][] = new int [M+1][NO_OF_CHAR];
+        int TF[][] = new int[M + 1][NO_OF_CHAR];
         List<Integer> lsg = new ArrayList();
         computeTransFunction(pat, M, TF);
 
         int j = 0;
-        for (int i = 0; i < N; i++){
+        for (int i = 0; i < N; i++) {
             j = TF[j][txt[i]];
-            if (j == M){
+            if (j == M) {
                 lsg.add((i - M + 1));
             }
         }
         return lsg;
     }
 
-    public static void computeTransFunction(char [] pat, int M, int TF [][]){
+    public static void computeTransFunction(char[] pat, int M, int TF[][]) {
         int i, lps = 0, x;
 
         // Fill entries in first row
-        for (x = 0; x < NO_OF_CHAR; x++)
-        {
+        for (x = 0; x < NO_OF_CHAR; x++) {
             TF[0][x] = 0;
         }
         TF[0][pat[0]] = 1;
 
         // Fill entries in other rows
-        for (i = 1; i < M; i++)
-        {
+        for (i = 1; i < M; i++) {
             // Copy values from row at index lps
-            for (x = 0; x < NO_OF_CHAR; x++)
-            {
+            for (x = 0; x < NO_OF_CHAR; x++) {
                 TF[i][x] = TF[lps][x];
             }
 
@@ -134,8 +130,7 @@ public class AB3Impl implements AB3 {
             TF[i][pat[i]] = i + 1;
 
             // Update lps for next row to be filled
-            if (i < M)
-            {
+            if (i < M) {
                 lps = TF[lps][pat[i]];
             }
         }
@@ -145,11 +140,14 @@ public class AB3Impl implements AB3 {
     public Set<SymbolCode> huffmanCoding(List<Character> symbols, List<Integer> frequency) {
         //sort symbols according to frequency
         sortFrequency(symbols, frequency);
+
         MinHeap tree = new MinHeap(frequency.size());
+
         //add nodes to tree
         for (int i = 0; i < symbols.size(); i++) {
             tree.add(new HuffmanNode(frequency.get(i), symbols.get(i)));
         }
+
         //call which generates the huffman tree
         tree.generateCodeTree();
 
@@ -161,6 +159,7 @@ public class AB3Impl implements AB3 {
 
     /**
      * function which computes a set containing SymbolCode objects
+     *
      * @param tree {@link MinHeap} object that already should have been transformed into a huffman tree
      * @return set of SymbolCode objects which represent one char and its binary code each
      */
@@ -176,9 +175,10 @@ public class AB3Impl implements AB3 {
 
     /**
      * recursive function which fills the set with objects
+     *
      * @param codeSet set which should be filled with SymbolCode objects
-     * @param node node for each recursive call (note: first call with root node from tree)
-     * @param code String which represents the binary code for a single char (initial call empty -> "")
+     * @param node    node for each recursive call (note: first call with root node from tree)
+     * @param code    String which represents the binary code for a single char (initial call empty -> "")
      * @throws IllegalAccessException
      */
     public void generateCodeSet(Set codeSet, HuffmanNode node, String code) throws IllegalAccessException {
@@ -195,7 +195,8 @@ public class AB3Impl implements AB3 {
 
     /**
      * function which sorts the lists according to the frequency with shellSort algorithm
-     * @param symbols list of char symbols
+     *
+     * @param symbols   list of char symbols
      * @param frequency integer list of frequencies of each symbol
      */
     public void sortFrequency(List<Character> symbols, List<Integer> frequency) {
@@ -301,6 +302,8 @@ public class AB3Impl implements AB3 {
             for (int i = 0; i < size - 1; i++) {
                 if (temp > heap[i + 1].frequency) {
                     swap(i, i + 1);
+                } else {
+                    break;
                 }
             }
         }
