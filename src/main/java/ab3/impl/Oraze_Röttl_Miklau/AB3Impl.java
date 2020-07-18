@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Set;
 
 public class AB3Impl implements AB3 {
+  static int NO_OF_CHAR = 400; 
+
 
     @Override
     public SearchInfoKMP findPatternKMP(String text, String pattern) {
@@ -90,7 +92,7 @@ public class AB3Impl implements AB3 {
 
       return search(pat,txt);
     }
-    
+
     public List<Integer> search (char pat [], char txt []){
         int M = pat.length;
         int N = txt.length;
